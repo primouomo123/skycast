@@ -1,6 +1,6 @@
 
 
-function Header.jsx() {
+function Header() {
     return (
         <>
             Header
