@@ -13,17 +13,6 @@ export const CurrentLocationProvider = ({ children }) => {
     const [currentLon, setCurrentLon] = useState(null);
 
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition((position) => {
-          setCurrentLat(position.coords.latitude);
-          setCurrentLon(position.coords.longitude);
-        },    
-        () => {
-          setCurrentLat(null);
-          setCurrentLon(null);
-        });
-      }, []);
-
-    useEffect(() => {
         if (currentLat !== null && currentLon !== null) {
             fetchCurrentWeather(currentLat, currentLon);
         }

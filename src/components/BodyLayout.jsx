@@ -5,7 +5,7 @@ import CurrentWeatherCard from './CurrentWeatherCard';
 function BodyLayout() {
     return (
         <Grid container spacing={2} sx={{ marginTop: 2 }}>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ width: '100%' }}>
                 <CurrentWeatherCard />
             </Grid>
         </Grid>

@@ -4,6 +4,7 @@ import { lightTheme, darkTheme } from './style/theme';
 
 import Header from './components/Header'
 import BodyLayout from './components/BodyLayout';
+import SearchBar from './components/SearchBar';
 
 
 
@@ -19,6 +20,7 @@ function App() {
       <CssBaseline />
       <Container maxWidth='lg'>
         <Header onDarkModeToggle={handleThemeToggle} isDarkMode={isDarkMode} />
+        <SearchBar onSearch={(query) => console.log(query)} />
         <BodyLayout />
       </Container>
     </ThemeProvider>
