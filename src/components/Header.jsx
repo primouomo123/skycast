@@ -10,18 +10,6 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 function Header({  onDarkModeToggle, isDarkMode }) {
   const { setCurrentLat, setCurrentLon } = useCurrentLocation();
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setCurrentLat(position.coords.latitude);
-      setCurrentLon(position.coords.longitude);
-    });
-
-    () => {
-      setCurrentLat(null);
-      setCurrentLon(null);
-    };
-  }, []);
-
   return (
     <AppBar position="static">
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
