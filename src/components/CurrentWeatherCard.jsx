@@ -39,7 +39,8 @@ function CurrentWeatherCard() {
         p: 3,
         boxShadow: 4,
         background: "rgba(255,255,255,0.9)",
-        backdropFilter: "blur(6px)"
+        backdropFilter: "blur(6px)",
+        marginTop: 10
       }}
     >
       <CardContent>
