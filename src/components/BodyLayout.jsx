@@ -1,4 +1,3 @@
-
 import { Grid } from '@mui/material';
 
 import CurrentWeatherCard from './CurrentWeatherCard';

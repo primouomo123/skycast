@@ -16,13 +16,12 @@ function Header({  onDarkModeToggle, isDarkMode }) {
         
         {/* Left: User Location's Weather*/}
         <Box sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
-          <Typography variant="body1">Location Unavailable</Typography>
+          <WbCloudyIcon />
         </Box>
         
 
         {/* Center: Title */}
         <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <WbCloudyIcon />
           <Typography variant="h4">SkyCast</Typography>
         </Box>
 

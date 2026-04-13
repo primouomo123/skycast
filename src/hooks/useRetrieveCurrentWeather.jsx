@@ -21,7 +21,7 @@ function useRetrieveCurrentWeather() {
                 params: {
                     lat: lat,
                     lon: lon,
-                    units: 'imperial',
+                    units: 'metric',
                     appid: apiKey
                 }
             });

@@ -37,6 +37,9 @@ export const CurrentLocationProvider = ({ children }) => {
     const description = weatherData?.weather?.[0]?.description || null;
     const temp = weatherData?.main?.temp || null;
     const country = weatherData?.sys?.country || null;
+    const dateTime = weatherData ? new Date(weatherData.dt * 1000) : null;
+    const time = dateTime ? dateTime.toLocaleTimeString() : null;
+    const date = dateTime ? dateTime.toLocaleDateString() : null;
 
     return (
         <CurrentLocationContext.Provider
@@ -51,7 +54,10 @@ export const CurrentLocationProvider = ({ children }) => {
                 fallBackIconImage,
                 country,
                 weatherError,
-                weatherLoading
+                weatherLoading,
+                dateTime,
+                time,
+                date
             }}
         >
             {children}
