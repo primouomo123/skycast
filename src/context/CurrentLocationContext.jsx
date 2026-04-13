@@ -41,15 +41,18 @@ export const CurrentLocationProvider = ({ children }) => {
     // Dynamically derive fields from weatherData
     const city = weatherData?.name || null;
     const condition = weatherMap[weatherData?.weather?.[0]?.main]?.label || weatherData?.weather?.[0]?.main || null;
-    const Icon = weatherMap[weatherData?.weather?.[0]?.main]?.icon || null;
-    const fallBackIconImage = getWeatherIcon(weatherData?.weather?.[0]?.icon) || null;
+    const icon = getWeatherIcon(weatherData?.weather?.[0]?.icon) || null;
     const description = weatherData?.weather?.[0]?.description || null;
-    const temp = weatherData?.main?.temp || null;
+    const tempC = weatherData?.main?.temp ? Math.round(weatherData.main.temp) : null;
+    const feelsLikeC = weatherData?.main?.feels_like ? Math.round(weatherData.main.feels_like) : null;
+    const tempMinC = weatherData?.main?.temp_min ? Math.round(weatherData.main.temp_min) : null;
+    const tempMaxC = weatherData?.main?.temp_max ? Math.round(weatherData.main.temp_max) : null;
+    const humidity = weatherData?.main?.humidity || null;
     const country = weatherData?.sys?.country || null;
     const dateTime = weatherData ? new Date(weatherData.dt * 1000) : null;
     const time = dateTime ? dateTime.toLocaleTimeString() : null;
     const date = dateTime ? dateTime.toLocaleDateString() : null;
-
+    const day = dateTime ? dateTime.toLocaleDateString(undefined, { weekday: 'long' }) : null;
     return (
         <CurrentLocationContext.Provider
             value={{
@@ -58,15 +61,19 @@ export const CurrentLocationProvider = ({ children }) => {
                 city,
                 condition,
                 description,
-                temp,
-                Icon,
-                fallBackIconImage,
+                tempC,
+                icon,
                 country,
                 weatherError,
                 weatherLoading,
                 dateTime,
                 time,
-                date
+                date,
+                day,
+                feelsLikeC,
+                tempMinC,
+                tempMaxC,
+                humidity
             }}
         >
             {children}

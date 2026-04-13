@@ -3,8 +3,10 @@ import { ThemeProvider, CssBaseline, Container } from '@mui/material';
 import { lightTheme, darkTheme } from './style/theme';
 
 import Header from './components/Header'
-import BodyLayout from './components/BodyLayout';
+import CurrentWeatherCard from './components/CurrentWeatherCard';
+import ForecastLayout from './components/ForecastLayOut';
 import SearchBar from './components/SearchBar';
+import { useCurrentLocation } from './context/CurrentLocationContext'; 
 
 
 
@@ -21,7 +23,8 @@ function App() {
       <Container maxWidth='lg'>
         <Header onDarkModeToggle={handleThemeToggle} isDarkMode={isDarkMode} />
         <SearchBar onSearch={(query) => console.log(query)} />
-        <BodyLayout />
+        <CurrentWeatherCard />
+        <ForecastLayout />
       </Container>
     </ThemeProvider>
   );
