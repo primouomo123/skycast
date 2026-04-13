@@ -1,92 +1,121 @@
-import { Card, CardContent, Typography, Box } from "@mui/material";
+import { Card, CardContent, Typography, Box, Divider, CircularProgress } from "@mui/material";
 import { useCurrentLocation } from "../context/CurrentLocationContext";
 
 function CurrentWeatherCard() {
   const {
     city,
     country,
-    temp,
+    tempC,
+    feelsLikeC,
+    tempMaxC,
+    tempMinC,
+    humidity,
     condition,
     description,
-    Icon,
-    fallBackIconImage,
-    weatherError,
+    icon,
+    time,
+    date,
+    day,
+    weatherLoading,
+    weatherError
   } = useCurrentLocation();
 
-  if (weatherError) {
+  if (weatherLoading || tempC == null || city == null) {
     return (
-      <Card sx={{ borderRadius: 3, minHeight: 200 }}>
-        <CardContent>
-          <Typography color="error">
-            Error: {weatherError}
-          </Typography>
-        </CardContent>
-      </Card>
-    );
+      <CircularProgress sx={{ display: "block", mx: "auto", mt: 5 }} />
+    )
+  }
+
+  if (weatherError) {
+    return <div>Error: {weatherError}</div>;
   }
 
   return (
-    <Card sx={{ borderRadius: 3, minHeight: 200, p: 1 }}>
+    <Card
+      sx={{
+        width: "100%",
+        mx: 0,
+        borderRadius: 4,
+        p: 3,
+        boxShadow: 4,
+        background: "rgba(255,255,255,0.9)",
+        backdropFilter: "blur(6px)"
+      }}
+    >
       <CardContent>
 
-        {/* Top: City */}
-        <Typography variant="h6" sx={{ opacity: 0.8 }}>
-          {city ? `${city}, ${country}` : "Unknown Location"}
-        </Typography>
+        {/* HEADER */}
+        <Box mb={3} textAlign="center">
+          <Typography variant="h4" fontWeight={700}>
+            {city}, {country}
+          </Typography>
 
-        {/* Main row: Icon + Weather */}
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+            {day}, {date} • {time}
+          </Typography>
+        </Box>
+
+        <Divider sx={{ mb: 3 }} />
+
+        {/* MAIN CONTENT */}
         <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 3,
-            mt: 2,
-          }}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          gap={4}
         >
-          {/* Left: Icon */}
-          <Box>
-            {Icon ? (
-              <Icon sx={{ fontSize: 80 }} />
-            ) : (
+
+          {/* LEFT SECTION */}
+          <Box flex={1} display="flex" alignItems="center" gap={2}>
+            {icon && (
               <img
-                src={fallBackIconImage}
-                alt={condition}
-                style={{ width: 80, height: 80 }}
+                src={icon}
+                alt="Weather Icon"
+                style={{ width: 75, height: 75 }}
               />
             )}
+
+            <Box>
+              <Typography variant="h6" fontWeight={600}>
+                {condition}
+              </Typography>
+
+              <Typography variant="body2" color="text.secondary">
+                {description}
+              </Typography>
+
+              <Typography variant="body2" sx={{ mt: 1 }}>
+                💧 {humidity}%
+              </Typography>
+            </Box>
           </Box>
 
-          {/* Right: Weather Details */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 0.5,
-              textAlign: "right",
-            }}
-          >
-            <Typography variant="h4">
-              {temp ? `${Math.round(temp)}°C` : "N/A"}
+          {/* CENTER SECTION */}
+          <Box flex={1} textAlign="center">
+            <Typography variant="h2" fontWeight={700} lineHeight={1}>
+              {tempC}°
             </Typography>
 
-            <Typography
-              variant="subtitle1"
-              sx={{ textTransform: "capitalize" }}
-            >
-              {condition || "N/A"}
-            </Typography>
-
-            <Typography
-              variant="body2"
-              sx={{
-                opacity: 0.7,
-                textTransform: "capitalize",
-              }}
-            >
-              {description || "No description available."}
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              Feels like {feelsLikeC}°
             </Typography>
           </Box>
+
+          {/* RIGHT SECTION */}
+          <Box flex={1} textAlign="right">
+            <Typography variant="body2" color="text.secondary">
+              Min: <strong>{tempMinC}°</strong>
+            </Typography>
+
+            <Typography variant="body2" color="text.secondary">
+              Max: <strong>{tempMaxC}°</strong>
+            </Typography>
+
+            <Typography variant="body2" color="text.secondary">
+              Humidity: <strong>{humidity}%</strong>
+            </Typography>
+          </Box>
+
         </Box>
 
       </CardContent>
