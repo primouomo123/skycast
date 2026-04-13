@@ -1,11 +1,10 @@
-
 import { useState } from 'react';
-import { ThemeProvider, CssBaseline } from '@mui/material';
+import { ThemeProvider, CssBaseline, Container } from '@mui/material';
 import { lightTheme, darkTheme } from './style/theme';
 
-import './App.css'
-
 import Header from './components/Header'
+import BodyLayout from './components/BodyLayout';
+
 
 
 function App() {
@@ -18,9 +17,12 @@ function App() {
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <CssBaseline />
-      <Header onDarkModeToggle={handleThemeToggle} isDarkMode={isDarkMode} />
+      <Container maxWidth='lg'>
+        <Header onDarkModeToggle={handleThemeToggle} isDarkMode={isDarkMode} />
+        <BodyLayout />
+      </Container>
     </ThemeProvider>
   );
 }
 
-export default App
+export default App;

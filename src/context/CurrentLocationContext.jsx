@@ -1,6 +1,9 @@
 import { createContext, useState, useContext, useEffect, use } from 'react';
 import useRetrieveCurrentWeather from '../hooks/useRetrieveCurrentWeather';
 
+import { weatherMap } from '../utils/weatherMap';
+import getWeatherIcon from '../utils/getWeatherIcon';
+
 const CurrentLocationContext = createContext();
 
 export const CurrentLocationProvider = ({ children }) => {
@@ -8,7 +11,6 @@ export const CurrentLocationProvider = ({ children }) => {
 
     const [currentLat, setCurrentLat] = useState(null);
     const [currentLon, setCurrentLon] = useState(null);
-    const [userCity, setUserCity] = useState(null);
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -29,7 +31,9 @@ export const CurrentLocationProvider = ({ children }) => {
 
     // Dynamically derive fields from weatherData
     const city = weatherData?.name || null;
-    const main = weatherData?.weather?.[0]?.main || null;
+    const condition = weatherMap[weatherData?.weather?.[0]?.main]?.label || weatherData?.weather?.[0]?.main || null;
+    const Icon = weatherMap[weatherData?.weather?.[0]?.main]?.icon || null;
+    const fallBackIconImage = getWeatherIcon(weatherData?.weather?.[0]?.icon) || null;
     const description = weatherData?.weather?.[0]?.description || null;
     const temp = weatherData?.main?.temp || null;
     const country = weatherData?.sys?.country || null;
@@ -40,9 +44,11 @@ export const CurrentLocationProvider = ({ children }) => {
                 setCurrentLat,
                 setCurrentLon,
                 city,
-                main,
+                condition,
                 description,
                 temp,
+                Icon,
+                fallBackIconImage,
                 country,
                 weatherError,
                 weatherLoading
