@@ -1,25 +1,33 @@
+import { useEffect } from "react";
+import { useCurrentLocation } from "../context/CurrentLocationContext";
+
 import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
+import Box from '@mui/material/Box';
 import WbCloudyIcon from "@mui/icons-material/WbCloudy";
+import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 
-function Header() {
+function Header({  onDarkModeToggle, isDarkMode }) {
+  const { setCurrentLat, setCurrentLon } = useCurrentLocation();
+
   return (
     <AppBar position="static">
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         
-        {/* Left: Logo*/}
+        {/* Left: User Location's Weather*/}
+        <Box sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
+          <WbCloudyIcon />
+        </Box>
         
 
         {/* Center: Title */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <WbCloudyIcon />
-          <Typography variant="h6">SkyCast</Typography>
-        </div>
-        
+        <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <Typography variant="h4">SkyCast</Typography>
+        </Box>
 
         {/* Right: Actions */}
-        <IconButton color="inherit">
-          <DarkModeIcon />
+        <IconButton color="inherit" onClick={onDarkModeToggle} sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
+          {isDarkMode ? <DarkModeIcon sx={{color: "black"}} /> : <LightModeIcon sx={{color: "yellow"}} />} {isDarkMode ? "Dark" : "Light"} mode
         </IconButton>
 
       </Toolbar>

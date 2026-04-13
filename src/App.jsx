@@ -1,11 +1,13 @@
-
 import { useState } from 'react';
-import { ThemeProvider, CssBaseline, Button } from '@mui/material';
+import { ThemeProvider, CssBaseline, Container } from '@mui/material';
 import { lightTheme, darkTheme } from './style/theme';
 
-import './App.css'
-
 import Header from './components/Header'
+import CurrentWeatherCard from './components/CurrentWeatherCard';
+import ForecastLayout from './components/ForecastLayOut';
+import SearchBar from './components/SearchBar';
+import { useCurrentLocation } from './context/CurrentLocationContext'; 
+
 
 
 function App() {
@@ -18,14 +20,14 @@ function App() {
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <CssBaseline />
-      <Header />
-      <div style={{ padding: '1rem' }}>
-        <Button variant="contained" onClick={handleThemeToggle}>
-          Switch to {isDarkMode ? 'Light' : 'Dark'} Mode
-        </Button>
-      </div>
+      <Container maxWidth='lg'>
+        <Header onDarkModeToggle={handleThemeToggle} isDarkMode={isDarkMode} />
+        <SearchBar onSearch={(query) => console.log(query)} />
+        <CurrentWeatherCard />
+        <ForecastLayout />
+      </Container>
     </ThemeProvider>
   );
 }
 
-export default App
+export default App;
