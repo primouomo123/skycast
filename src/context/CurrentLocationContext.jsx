@@ -1,5 +1,6 @@
-import { createContext, useState, useContext, useEffect, use } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
 import useRetrieveCurrentWeather from '../hooks/useRetrieveCurrentWeather';
+import useRetrieveLocation from '../hooks/useRetrieveLocation';
 
 import { weatherMap } from '../utils/weatherMap';
 import getWeatherIcon from '../utils/getWeatherIcon';
@@ -7,10 +8,29 @@ import getWeatherIcon from '../utils/getWeatherIcon';
 const CurrentLocationContext = createContext();
 
 export const CurrentLocationProvider = ({ children }) => {
+    const { lat, lon, error: locationError, loading: locationLoading, fetchLocation } = useRetrieveLocation();
     const { weatherData, error: weatherError, loading: weatherLoading, fetchCurrentWeather } = useRetrieveCurrentWeather();
 
     const [currentLat, setCurrentLat] = useState(null);
     const [currentLon, setCurrentLon] = useState(null);
+
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    setCurrentLat(position.coords.latitude);
+                    setCurrentLon(position.coords.longitude);
+                },
+                () => {
+                    setCurrentLat(null);
+                    setCurrentLon(null);
+                }
+            );
+        } else {
+            setCurrentLat(null);
+            setCurrentLon(null);
+        }
+    }, []);
 
     useEffect(() => {
         if (currentLat !== null && currentLon !== null) {
