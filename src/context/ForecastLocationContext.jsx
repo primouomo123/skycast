@@ -56,7 +56,7 @@ export const ForecastLocationProvider = ({ children }) => {
 
     // Getting data by Day
     const forecastData = useMemo(() => {
-      if (!dataByDay) return null;
+      if (!dataByDay) return [];
 
       const result = [];
 
