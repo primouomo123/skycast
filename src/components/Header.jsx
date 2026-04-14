@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCurrentLocation } from "../context/CurrentLocationContext";
+import { useCurrentContext } from "../context/CurrentLocationContext";
 
 import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
 import Box from '@mui/material/Box';
@@ -8,7 +8,7 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 
 function Header({  onDarkModeToggle, isDarkMode }) {
-  const { setCurrentLat, setCurrentLon } = useCurrentLocation();
+  const { setCurrentLat, setCurrentLon } = useCurrentContext();
 
   return (
     <AppBar position="fixed">
