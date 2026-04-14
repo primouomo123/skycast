@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useState, useContext, useEffect, useMemo } from 'react';
 import useRetrieveForecastWeather from '../hooks/useRetrieveForecastWeather';
 import { useCurrentContext } from './CurrentLocationContext';
 
@@ -46,45 +46,65 @@ export const ForecastLocationProvider = ({ children }) => {
       return days;
     }
 
-    const data_by_day = forecastWeather ? groupByDay(forecastWeather) : null;
+    const dataByDay = useMemo(() => {
+      if (!forecastWeather) return null;
+      return groupByDay(forecastWeather);
+    }, [forecastWeather]);
 
     // Log the grouped data to verify
-    console.log(data_by_day);
+    console.log(dataByDay);
 
     // Getting data by Day
-    const forecastData = [];
-    for (const date in data_by_day) {
+    const forecastData = useMemo(() => {
+      if (!dataByDay) return null;
+
+      const result = [];
+
+      for (const date in dataByDay) {
 
       const day = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
-      const tempMinC = Math.round(data_by_day[date].reduce((sum, entry) => sum + entry.tempMinC, 0) / data_by_day[date].length);
-      const tempMaxC = Math.round(data_by_day[date].reduce((sum, entry) => sum + entry.tempMaxC, 0) / data_by_day[date].length);
+      const tempMinC = Math.round(dataByDay[date].reduce((sum, entry) => sum + entry.tempMinC, 0) / dataByDay[date].length);
+      const tempMaxC = Math.round(dataByDay[date].reduce((sum, entry) => sum + entry.tempMaxC, 0) / dataByDay[date].length);
       let condition = null;
       let icon = null;
       let description = null;
       let humidity = null;
 
       // Getting the best condition for the day (preferably at 15:00:00, otherwise at 12:00:00) and the icon for that condition
-      for (const entry of data_by_day[date]) {
+      let selectedEntry = null;
+      for (const entry of dataByDay[date]) {
         if (entry.time === "15:00:00") {
-          condition = weatherMap[entry.condition]?.label || entry.condition;
-          icon = getWeatherIcon(entry.condition);
-          description = entry.description;
-          humidity = entry.humidity;
+          selectedEntry = entry;
           break;
         } else if (entry.time === "12:00:00") {
-          condition = weatherMap[entry.condition]?.label || entry.condition;
-          icon = getWeatherIcon(entry.condition);
-          description = entry.description;
-          humidity = entry.humidity;
-        } else {
-          condition = weatherMap[data_by_day[date][0].condition]?.label || data_by_day[date][0].condition;
-          icon = getWeatherIcon(data_by_day[date][0].condition);
-          description = data_by_day[date][0].description;
-          humidity = data_by_day[date][0].humidity;
-
+          selectedEntry = entry;
         }
       }
+
+      if (!selectedEntry) {
+          selectedEntry = dataByDay[date][0]; // Fallback to the first entry if neither 15:00:00 nor 12:00:00 is found
+        }
+
+      condition = weatherMap[selectedEntry.condition]?.label || selectedEntry.condition;
+      icon = getWeatherIcon(selectedEntry.condition);
+      description = selectedEntry.description;
+      humidity = selectedEntry.humidity;
+
+      result.push({
+        date,
+        day,
+        tempMinC,
+        tempMaxC,
+        condition,
+        icon,
+        description,
+        humidity
+      });
     }
+
+    return result;
+    
+    }, [dataByDay]);
 
 
 
