@@ -1,9 +1,9 @@
 import { Grid } from '@mui/material';
-import CurrentWeatherCard from './CurrentWeatherCard';
-import { useCurrentLocation } from '../context/CurrentLocationContext';
+import ForecastWeatherCard from './ForeCastWeatherCard';
+import { useCurrentContext } from '../context/CurrentLocationContext';
 
 function ForecastLayout() {
-  const { weatherError, weatherLoading } = useCurrentLocation();
+  const { weatherError, weatherLoading } = useCurrentContext();
 
   if (weatherLoading) {
     return <div>Loading...</div>;
@@ -31,7 +31,7 @@ function ForecastLayout() {
           justifyContent: "center"
         }}
       >
-        <CurrentWeatherCard />
+        <ForecastWeatherCard />
       </Grid>
     </Grid>
   );
