@@ -2,7 +2,6 @@ import { createContext, useState, useContext, useEffect } from 'react';
 import useRetrieveCurrentWeather from '../hooks/useRetrieveCurrentWeather';
 import useRetrieveLocation from '../hooks/useRetrieveLocation';
 
-import { weatherMap } from '../utils/weatherMap';
 import getWeatherIcon from '../utils/getWeatherIcon';
 
 const CurrentLocationContext = createContext();
@@ -40,7 +39,7 @@ export const CurrentLocationProvider = ({ children }) => {
 
     // Dynamically derive fields from weatherData
     const city = weatherData?.name || null;
-    const condition = weatherMap[weatherData?.weather?.[0]?.main]?.label || weatherData?.weather?.[0]?.main || null;
+    const condition = weatherData?.weather?.[0]?.main || null;
     const icon = getWeatherIcon(weatherData?.weather?.[0]?.icon) || null;
     const description = weatherData?.weather?.[0]?.description || null;
     const tempC = weatherData?.main?.temp ? Math.round(weatherData.main.temp) : null;
