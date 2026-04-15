@@ -58,6 +58,10 @@ export const CurrentLocationProvider = ({ children }) => {
             value={{
                 setCurrentLat,
                 setCurrentLon,
+                currentLat,
+                currentLon,
+                locationError,
+                locationLoading,
                 city,
                 condition,
                 description,
@@ -82,4 +86,4 @@ export const CurrentLocationProvider = ({ children }) => {
 
 };
 
-export const useCurrentLocation = () => useContext(CurrentLocationContext);
+export const useCurrentContext = () => useContext(CurrentLocationContext);

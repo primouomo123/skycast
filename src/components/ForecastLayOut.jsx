@@ -1,17 +1,36 @@
-import { Grid } from '@mui/material';
-import CurrentWeatherCard from './CurrentWeatherCard';
-import { useCurrentLocation } from '../context/CurrentLocationContext';
+import { Grid, CircularProgress } from '@mui/material';
+import ForecastWeatherCard from './ForeCastWeatherCard';
+import { useForecastContext } from '../context/ForecastLocationContext';
 
 function ForecastLayout() {
-  const { weatherError, weatherLoading } = useCurrentLocation();
+  const { 
+    forecastData,
+    forecastError,
+    forecastLoading,
+   } = useForecastContext();
 
-  if (weatherLoading) {
-    return <div>Loading...</div>;
-  }
+   if (forecastLoading || forecastData == null) {
+    return (
+      <CircularProgress sx={{ display: "block", mx: "auto", mt: 5 }} />
+    )
+   }
 
-  if (weatherError) {
-    return <div>Error: {weatherError}</div>;
-  }
+   if (forecastError) {
+    return <div>Error: {forecastError}</div>;
+   }
+
+   if (forecastData.length === 0) {
+    return <div>No forecast data available.</div>;
+   }
+
+   const content = forecastData.map((dayData) => (
+    <Grid item xs={12} sm={6} md={4} lg={3} key={dayData.date}>
+      <ForecastWeatherCard
+        dayData={dayData}
+      />
+    </Grid>
+  ));
+
 
   return (
     <Grid
@@ -23,16 +42,7 @@ function ForecastLayout() {
         justifyContent: "center"
       }}
     >
-      <Grid
-        item
-        xs={12}
-        sx={{
-          display: "flex",
-          justifyContent: "center"
-        }}
-      >
-        <CurrentWeatherCard />
-      </Grid>
+      {content}
     </Grid>
   );
 }

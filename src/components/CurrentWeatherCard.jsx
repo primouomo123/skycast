@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography, Box, Divider, CircularProgress } from "@mui/material";
-import { useCurrentLocation } from "../context/CurrentLocationContext";
+import { useCurrentContext } from "../context/CurrentLocationContext";
 
 function CurrentWeatherCard() {
   const {
@@ -18,12 +18,12 @@ function CurrentWeatherCard() {
     day,
     weatherLoading,
     weatherError
-  } = useCurrentLocation();
+  } = useCurrentContext();
 
   if (weatherLoading || tempC == null || city == null) {
     return (
       <CircularProgress sx={{ display: "block", mx: "auto", mt: 5 }} />
-    )
+    );
   }
 
   if (weatherError) {
@@ -39,7 +39,8 @@ function CurrentWeatherCard() {
         p: 3,
         boxShadow: 4,
         background: "rgba(255,255,255,0.9)",
-        backdropFilter: "blur(6px)"
+        backdropFilter: "blur(6px)",
+        marginTop: 10
       }}
     >
       <CardContent>
@@ -57,30 +58,43 @@ function CurrentWeatherCard() {
 
         <Divider sx={{ mb: 3 }} />
 
-        {/* MAIN CONTENT */}
+        {/* MAIN CONTENT WRAPPER — THIS FIXES EVERYTHING */}
         <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          gap={4}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 4,
+            width: "100%",
+            flexWrap: "nowrap"
+          }}
         >
 
           {/* LEFT SECTION */}
-          <Box flex={1} display="flex" alignItems="center" gap={2}>
+          <Box sx={{ flex: 1, display: "flex", alignItems: "center", gap: 2, minWidth: 0 }}>
             {icon && (
               <img
                 src={icon}
                 alt="Weather Icon"
-                style={{ width: 75, height: 75 }}
+                style={{ width: 75, height: 75, flexShrink: 0 }}
               />
             )}
 
-            <Box>
-              <Typography variant="h6" fontWeight={600}>
+            <Box sx={{ minWidth: 0 }}>
+              <Typography variant="h6" fontWeight={600} noWrap>
                 {condition}
               </Typography>
 
-              <Typography variant="body2" color="text.secondary">
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis"
+                }}
+              >
                 {description}
               </Typography>
 
@@ -91,7 +105,7 @@ function CurrentWeatherCard() {
           </Box>
 
           {/* CENTER SECTION */}
-          <Box flex={1} textAlign="center">
+          <Box sx={{ flex: 1, textAlign: "center", minWidth: 0 }}>
             <Typography variant="h2" fontWeight={700} lineHeight={1}>
               {tempC}°
             </Typography>
@@ -102,7 +116,7 @@ function CurrentWeatherCard() {
           </Box>
 
           {/* RIGHT SECTION */}
-          <Box flex={1} textAlign="right">
+          <Box sx={{ flex: 1, textAlign: "right", minWidth: 0 }}>
             <Typography variant="body2" color="text.secondary">
               Min: <strong>{tempMinC}°</strong>
             </Typography>

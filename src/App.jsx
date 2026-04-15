@@ -6,7 +6,7 @@ import Header from './components/Header'
 import CurrentWeatherCard from './components/CurrentWeatherCard';
 import ForecastLayout from './components/ForecastLayOut';
 import SearchBar from './components/SearchBar';
-import { useCurrentLocation } from './context/CurrentLocationContext'; 
+import { useCurrentContext } from './context/CurrentLocationContext';
 
 
 
