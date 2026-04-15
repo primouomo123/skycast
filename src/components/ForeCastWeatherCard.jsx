@@ -1,34 +1,7 @@
 import { Card, CardContent, Typography, Box, Divider, CircularProgress } from "@mui/material";
 import { useCurrentContext } from "../context/CurrentLocationContext";
 
-function ForecastWeatherCard() {
-  const {
-    city,
-    country,
-    tempC,
-    feelsLikeC,
-    tempMaxC,
-    tempMinC,
-    humidity,
-    condition,
-    description,
-    icon,
-    time,
-    date,
-    day,
-    weatherLoading,
-    weatherError
-  } = useCurrentContext();
-
-  if (weatherLoading || tempC == null || city == null) {
-    return (
-      <CircularProgress sx={{ display: "block", mx: "auto", mt: 5 }} />
-    )
-  }
-
-  if (weatherError) {
-    return <div>Error: {weatherError}</div>;
-  }
+function ForecastWeatherCard( {dayData} ) {
 
   return (
     <Card
@@ -48,11 +21,7 @@ function ForecastWeatherCard() {
         {/* HEADER */}
         <Box mb={3} textAlign="center">
           <Typography variant="h4" fontWeight={700}>
-            {city}, {country}
-          </Typography>
-
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-            {day}, {date} • {time}
+            {dayData.day}
           </Typography>
         </Box>
 
@@ -66,9 +35,9 @@ function ForecastWeatherCard() {
 
           {/* LEFT SECTION */}
           <Box flex={1} display="flex" alignItems="center" gap={2}>
-            {icon && (
+            {dayData.icon && (
               <img
-                src={icon}
+                src={dayData.icon}
                 alt="Weather Icon"
                 style={{ width: 75, height: 75 }}
               />
@@ -76,15 +45,15 @@ function ForecastWeatherCard() {
 
             <Box>
               <Typography variant="h6" fontWeight={600}>
-                {condition}
+                {dayData.condition}
               </Typography>
 
               <Typography variant="body2" color="text.secondary">
-                {description}
+                {dayData.description}
               </Typography>
 
               <Typography variant="body2" sx={{ mt: 1 }}>
-                💧 {humidity}%
+                💧 {dayData.humidity}%
               </Typography>
             </Box>
           </Box>
@@ -92,26 +61,11 @@ function ForecastWeatherCard() {
           {/* CENTER SECTION */}
           <Box flex={1} textAlign="center">
             <Typography variant="h2" fontWeight={700} lineHeight={1}>
-              {tempC}°
+              Min: {dayData.tempMinC}°
             </Typography>
 
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Feels like {feelsLikeC}°
-            </Typography>
-          </Box>
-
-          {/* RIGHT SECTION */}
-          <Box flex={1} textAlign="right">
-            <Typography variant="body2" color="text.secondary">
-              Min: <strong>{tempMinC}°</strong>
-            </Typography>
-
-            <Typography variant="body2" color="text.secondary">
-              Max: <strong>{tempMaxC}°</strong>
-            </Typography>
-
-            <Typography variant="body2" color="text.secondary">
-              Humidity: <strong>{humidity}%</strong>
+              Max: {dayData.tempMaxC}°
             </Typography>
           </Box>
 

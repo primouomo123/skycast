@@ -23,7 +23,7 @@ export const ForecastLocationProvider = ({ children }) => {
       const days = {};
 
       data.list.forEach(item => {
-        const date = item.dt_txt.split(" ")[0];
+        const date = new Date(item.dt * 1000).toLocaleDateString();
 
         const entry = {
             tempC: Math.round(item.main.temp),
@@ -32,6 +32,7 @@ export const ForecastLocationProvider = ({ children }) => {
             tempMaxC: Math.round(item.main.temp_max),
             condition: item.weather[0].main,
             description: item.weather[0].description,
+            icon: getWeatherIcon(item.weather[0].icon),
             humidity: item.main.humidity,
             date: date,
             time: item.dt_txt.split(" ")[1]
@@ -86,7 +87,7 @@ export const ForecastLocationProvider = ({ children }) => {
         }
 
       condition = weatherMap[selectedEntry.condition]?.label || selectedEntry.condition;
-      icon = getWeatherIcon(selectedEntry.condition);
+      icon = selectedEntry.icon;
       description = selectedEntry.description;
       humidity = selectedEntry.humidity;
 
