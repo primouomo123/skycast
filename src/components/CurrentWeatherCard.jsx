@@ -31,7 +31,7 @@ function CurrentWeatherCard() {
   }
 
   return (
-    <Card
+    <Box
       sx={{
         width: "100%",
         mx: 0,
@@ -40,23 +40,35 @@ function CurrentWeatherCard() {
         boxShadow: 4,
         background: "rgba(255,255,255,0.9)",
         backdropFilter: "blur(6px)",
-        marginTop: 10
+        marginTop: 10,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
       }}
     >
-      <CardContent>
 
-        {/* HEADER */}
-        <Box mb={3} textAlign="center">
-          <Typography variant="h4" fontWeight={700}>
-            {city}, {country}
-          </Typography>
+      {/* HEADER */}
+      <Box
+        mb={3}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          textAlign: "center"
+        }}
+      >
+        <Typography variant="h4" fontWeight={700}>
+          {city}, {country}
+        </Typography>
 
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-            {dayOfWeek}, {date} • {time}
-          </Typography>
-        </Box>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+          {dayOfWeek}, {date} • {time}
+        </Typography>
+      </Box>
 
-        <Divider sx={{ mb: 3 }} />
+      <Divider sx={{ mb: 3, width: "100%" }} />
 
         {/* MAIN CONTENT WRAPPER — THIS FIXES EVERYTHING */}
         <Box
@@ -129,8 +141,7 @@ function CurrentWeatherCard() {
 
         </Box>
 
-      </CardContent>
-    </Card>
+    </Box>
   );
 }
 

@@ -50,6 +50,7 @@ const handleSearch = () => {
         value={city}
         onChange={(e) => setCity(e.target.value)}
         fullWidth
+        required
       />
       <TextField
         label="State"
@@ -58,6 +59,7 @@ const handleSearch = () => {
         value={state}
         onChange={(e) => setState(e.target.value)}
         sx={{ ml: 2 }}
+        required
       />
       <IconButton
         type="submit"
