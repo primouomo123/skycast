@@ -20,8 +20,8 @@ function ForecastWeatherCard( {dayData} ) {
 
         {/* HEADER */}
         <Box mb={3} textAlign="center">
-          <Typography variant="body1" fontWeight={700}>
-            {dayData.day} - {dayData.time}
+          <Typography variant="h5" fontWeight={700}>
+            {dayData.day}
           </Typography>
         </Box>
 
