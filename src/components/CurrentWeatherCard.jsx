@@ -4,6 +4,7 @@ import { useCurrentContext } from "../context/CurrentLocationContext";
 function CurrentWeatherCard() {
   const {
     city,
+    state,
     country,
     tempC,
     feelsLikeC,
@@ -17,7 +18,7 @@ function CurrentWeatherCard() {
     date,
     dayOfWeek,
     weatherLoading,
-    weatherError
+    weatherError,
   } = useCurrentContext();
 
   if (weatherLoading || tempC == null || city == null) {
@@ -60,7 +61,7 @@ function CurrentWeatherCard() {
         }}
       >
         <Typography variant="h4" fontWeight={700}>
-          {city}, {country}
+          {city}, {state ? `${state}, ` : ""}{country}
         </Typography>
 
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
