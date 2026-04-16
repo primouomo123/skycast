@@ -21,7 +21,7 @@ function ForecastWeatherCard( {dayData} ) {
         {/* HEADER */}
         <Box mb={3} textAlign="center">
           <Typography variant="h5" fontWeight={700}>
-            {dayData.day}
+            {dayData.dayOfWeek}
           </Typography>
         </Box>
 
