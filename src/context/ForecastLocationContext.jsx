@@ -1,125 +1,126 @@
-import { createContext, useState, useContext, useEffect, useMemo } from 'react';
+import { createContext, useContext, useEffect, useMemo } from 'react';
 import useRetrieveForecastWeather from '../hooks/useRetrieveForecastWeather';
 import { useCurrentContext } from './CurrentLocationContext';
-
-import { weatherMap } from '../utils/weatherMap';
 import getWeatherIcon from '../utils/getWeatherIcon';
+import getClosestEntry from '../utils/getClosestEntry';
 
 const ForecastLocationContext = createContext();
 
 export const ForecastLocationProvider = ({ children }) => {
-    const { currentLat, currentLon } = useCurrentContext();
-    const { forecastWeather, error: forecastError, loading: forecastLoading, fetchForecastWeather } = useRetrieveForecastWeather();
+  const { currentLat, currentLon, daysOfTheWeek } = useCurrentContext();
+  const {
+    forecastWeather,
+    error: forecastError,
+    loading: forecastLoading,
+    fetchForecastWeather
+  } = useRetrieveForecastWeather();
 
-    useEffect(() => {
-        if (currentLat !== null && currentLon !== null) {
-            fetchForecastWeather(currentLat, currentLon);
-
-        }
-    }, [currentLat, currentLon]);
-
-    // Grouping data by date
-    function groupByDay(data) {
-      const days = {};
-
-      data.list.forEach(item => {
-        const date = new Date(item.dt * 1000).toLocaleDateString();
-
-        const entry = {
-            tempC: Math.round(item.main.temp),
-            feelsLikeC: Math.round(item.main.feels_like),
-            tempMinC: Math.round(item.main.temp_min),
-            tempMaxC: Math.round(item.main.temp_max),
-            condition: item.weather[0].main,
-            description: item.weather[0].description,
-            icon: getWeatherIcon(item.weather[0].icon),
-            humidity: item.main.humidity,
-            date: date,
-            time: item.dt_txt.split(" ")[1]
-          };
-
-        if (!days[date]) {
-          days[date] = [];
-        }
-        days[date].push(entry);
-      });
-
-      return days;
+  // Fetch forecast when location changes
+  useEffect(() => {
+    if (currentLat !== null && currentLon !== null) {
+      fetchForecastWeather(currentLat, currentLon);
     }
+  }, [currentLat, currentLon]);
 
-    const dataByDay = useMemo(() => {
-      if (!forecastWeather) return null;
-      return groupByDay(forecastWeather);
-    }, [forecastWeather]);
+  // Group forecast entries by CITY LOCAL DATE
+  function groupByDay(data) {
+    const days = {};
+    const timeZoneOffset = data.city.timezone || 0; // seconds
 
-    // Log the grouped data to verify
-    console.log(dataByDay);
+    data.list.forEach((item) => {
+      const dateTime = new Date((item.dt + timeZoneOffset) * 1000);
 
-    // Getting data by Day
-    const forecastData = useMemo(() => {
-      if (!dataByDay) return [];
+      const date =
+        dateTime.getUTCFullYear() +
+        "-" +
+        String(dateTime.getUTCMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(dateTime.getUTCDate()).padStart(2, "0");
 
-      const result = [];
+      const time =
+        String(dateTime.getUTCHours()).padStart(2, "0") +
+        ":" +
+        String(dateTime.getUTCMinutes()).padStart(2, "0") +
+        ":" +
+        String(dateTime.getUTCSeconds()).padStart(2, "0");
 
-      for (const date in dataByDay) {
+      const dayOfWeek = daysOfTheWeek[dateTime.getUTCDay()];
 
-      const day = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
-      const tempMinC = Math.round(dataByDay[date].reduce((sum, entry) => sum + entry.tempMinC, 0) / dataByDay[date].length);
-      const tempMaxC = Math.round(dataByDay[date].reduce((sum, entry) => sum + entry.tempMaxC, 0) / dataByDay[date].length);
-      let condition = null;
-      let icon = null;
-      let description = null;
-      let humidity = null;
+      const entry = {
+        tempC: Math.round(item.main.temp),
+        feelsLikeC: Math.round(item.main.feels_like),
+        tempMinC: Math.round(item.main.temp_min),
+        tempMaxC: Math.round(item.main.temp_max),
+        condition: item.weather[0].main,
+        description: item.weather[0].description,
+        icon: getWeatherIcon(item.weather[0].icon),
+        humidity: item.main.humidity,
+        dateTime,
+        time,
+        date,
+        dayOfWeek,
+      };
 
-      // Getting the best condition for the day (preferably at 15:00:00, otherwise at 12:00:00) and the icon for that condition
-      let selectedEntry = null;
-      for (const entry of dataByDay[date]) {
-        if (entry.time === "15:00:00") {
-          selectedEntry = entry;
-          break;
-        } else if (entry.time === "12:00:00") {
-          selectedEntry = entry;
-        }
+      if (!days[date]) {
+        days[date] = [];
       }
 
-      if (!selectedEntry) {
-          selectedEntry = dataByDay[date][0]; // Fallback to the first entry if neither 15:00:00 nor 12:00:00 is found
-        }
+      days[date].push(entry);
+    });
 
-      condition = weatherMap[selectedEntry.condition]?.label || selectedEntry.condition;
-      icon = selectedEntry.icon;
-      description = selectedEntry.description;
-      humidity = selectedEntry.humidity;
+    return days;
+  }
+
+  // Process raw forecast data into daily summaries
+  const dataByDay = useMemo(() => {
+    if (!forecastWeather) return null;
+    return groupByDay(forecastWeather);
+  }, [forecastWeather]);
+
+  // Build forecast data array with one entry per day
+  const forecastData = useMemo(() => {
+    if (!dataByDay) return [];
+
+    const result = [];
+    const sortedDates = Object.keys(dataByDay).sort();
+
+    for (const date of sortedDates) {
+      const entries = dataByDay[date];
+      console.log(entries);
+
+      const tempMinC = Math.min(...entries.map((e) => e.tempMinC));
+      const tempMaxC = Math.max(...entries.map((e) => e.tempMaxC));
+
+      // Pick entry closest to 3 PM, then 12 PM
+      const selectedEntry = getClosestEntry(entries, [15, 12]);
 
       result.push({
-        date,
-        day,
+        date: selectedEntry.date,
+        dayOfWeek: selectedEntry.dayOfWeek,
+        time: selectedEntry.time,
         tempMinC,
         tempMaxC,
-        condition,
-        icon,
-        description,
-        humidity
+        condition: selectedEntry.condition,
+        icon: selectedEntry.icon,
+        description: selectedEntry.description,
+        humidity: selectedEntry.humidity
       });
     }
 
     return result;
-    
-    }, [dataByDay]);
+  }, [dataByDay]);
 
-
-
-    return (
-        <ForecastLocationContext.Provider
-            value={{
-                forecastData,
-                forecastError,
-                forecastLoading
-            }}
-        >
-            {children}
-        </ForecastLocationContext.Provider>
-    );
+  return (
+    <ForecastLocationContext.Provider
+      value={{
+        forecastData,
+        forecastError,
+        forecastLoading
+      }}
+    >
+      {children}
+    </ForecastLocationContext.Provider>
+  );
 };
 
 export const useForecastContext = () => useContext(ForecastLocationContext);

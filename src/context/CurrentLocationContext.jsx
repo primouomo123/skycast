@@ -2,7 +2,6 @@ import { createContext, useState, useContext, useEffect } from 'react';
 import useRetrieveCurrentWeather from '../hooks/useRetrieveCurrentWeather';
 import useRetrieveLocation from '../hooks/useRetrieveLocation';
 
-import { weatherMap } from '../utils/weatherMap';
 import getWeatherIcon from '../utils/getWeatherIcon';
 
 const CurrentLocationContext = createContext();
@@ -13,6 +12,8 @@ export const CurrentLocationProvider = ({ children }) => {
 
     const [currentLat, setCurrentLat] = useState(null);
     const [currentLon, setCurrentLon] = useState(null);
+    const [searchedCity, setSearchedCity] = useState(null);
+    const [searchedState, setSearchedState] = useState(null);
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -38,9 +39,32 @@ export const CurrentLocationProvider = ({ children }) => {
         }
     }, [currentLat, currentLon]);
 
+    useEffect(() => {
+    if (searchedCity && searchedState) {
+        fetchLocation(searchedCity, searchedState);
+    }
+    }, [searchedCity, searchedState, fetchLocation]);
+
+    useEffect(() => {
+    if (lat !== null && lon !== null) {
+        setCurrentLat(lat);
+        setCurrentLon(lon);
+    }
+    }, [lat, lon]);
+
+    const daysOfTheWeek = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ];
+
     // Dynamically derive fields from weatherData
     const city = weatherData?.name || null;
-    const condition = weatherMap[weatherData?.weather?.[0]?.main]?.label || weatherData?.weather?.[0]?.main || null;
+    const condition = weatherData?.weather?.[0]?.main || null;
     const icon = getWeatherIcon(weatherData?.weather?.[0]?.icon) || null;
     const description = weatherData?.weather?.[0]?.description || null;
     const tempC = weatherData?.main?.temp ? Math.round(weatherData.main.temp) : null;
@@ -49,15 +73,34 @@ export const CurrentLocationProvider = ({ children }) => {
     const tempMaxC = weatherData?.main?.temp_max ? Math.round(weatherData.main.temp_max) : null;
     const humidity = weatherData?.main?.humidity || null;
     const country = weatherData?.sys?.country || null;
-    const dateTime = weatherData ? new Date(weatherData.dt * 1000) : null;
-    const time = dateTime ? dateTime.toLocaleTimeString() : null;
-    const date = dateTime ? dateTime.toLocaleDateString() : null;
-    const day = dateTime ? dateTime.toLocaleDateString(undefined, { weekday: 'long' }) : null;
+    const timezone = weatherData?.timezone || null;
+    const dateTime = weatherData ? new Date((weatherData.dt + timezone) * 1000) : null;
+    const date = dateTime
+        ? dateTime.getUTCFullYear() +
+            "-" +
+            String(dateTime.getUTCMonth() + 1).padStart(2, "0") +
+            "-" +
+            String(dateTime.getUTCDate()).padStart(2, "0")
+        : null;
+
+    const time = dateTime
+        ? String(dateTime.getUTCHours()).padStart(2, "0") +
+            ":" +
+            String(dateTime.getUTCMinutes()).padStart(2, "0") +
+            ":" +
+            String(dateTime.getUTCSeconds()).padStart(2, "0")
+        : null;
+
+const dayOfWeek = dateTime ? daysOfTheWeek[dateTime.getUTCDay()] : null;
     return (
         <CurrentLocationContext.Provider
             value={{
                 setCurrentLat,
                 setCurrentLon,
+                searchedCity,
+                searchedState,
+                setSearchedCity,
+                setSearchedState,
                 currentLat,
                 currentLon,
                 locationError,
@@ -73,11 +116,12 @@ export const CurrentLocationProvider = ({ children }) => {
                 dateTime,
                 time,
                 date,
-                day,
+                dayOfWeek,
                 feelsLikeC,
                 tempMinC,
                 tempMaxC,
-                humidity
+                humidity,
+                daysOfTheWeek
             }}
         >
             {children}

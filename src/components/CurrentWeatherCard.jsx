@@ -15,7 +15,7 @@ function CurrentWeatherCard() {
     icon,
     time,
     date,
-    day,
+    dayOfWeek,
     weatherLoading,
     weatherError
   } = useCurrentContext();
@@ -52,7 +52,7 @@ function CurrentWeatherCard() {
           </Typography>
 
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-            {day}, {date} • {time}
+            {dayOfWeek}, {date} • {time}
           </Typography>
         </Box>
 
@@ -98,9 +98,6 @@ function CurrentWeatherCard() {
                 {description}
               </Typography>
 
-              <Typography variant="body2" sx={{ mt: 1 }}>
-                💧 {humidity}%
-              </Typography>
             </Box>
           </Box>
 
