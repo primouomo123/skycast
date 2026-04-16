@@ -3,12 +3,14 @@ import useRetrieveCurrentWeather from '../hooks/useRetrieveCurrentWeather';
 import useRetrieveLocation from '../hooks/useRetrieveLocation';
 
 import getWeatherIcon from '../utils/getWeatherIcon';
+import useGetState from '../hooks/useGetState';
 
 const CurrentLocationContext = createContext();
 
 export const CurrentLocationProvider = ({ children }) => {
     const { lat, lon, error: locationError, loading: locationLoading, fetchLocation } = useRetrieveLocation();
     const { weatherData, error: weatherError, loading: weatherLoading, fetchCurrentWeather } = useRetrieveCurrentWeather();
+    const { fetchedState, fetchState } = useGetState();
 
     const [currentLat, setCurrentLat] = useState(null);
     const [currentLon, setCurrentLon] = useState(null);
@@ -52,6 +54,12 @@ export const CurrentLocationProvider = ({ children }) => {
     }
     }, [lat, lon]);
 
+    useEffect(() => {
+        if (currentLat !== null && currentLon !== null) {
+            fetchState(currentLat, currentLon);
+        }
+    }, [currentLat, currentLon]);
+
     const daysOfTheWeek = [
       "Sunday",
       "Monday",
@@ -64,6 +72,7 @@ export const CurrentLocationProvider = ({ children }) => {
 
     // Dynamically derive fields from weatherData
     const city = weatherData?.name || null;
+    const state = fetchedState || null;
     const condition = weatherData?.weather?.[0]?.main || null;
     const icon = getWeatherIcon(weatherData?.weather?.[0]?.icon) || null;
     const description = weatherData?.weather?.[0]?.description || null;
@@ -106,6 +115,7 @@ const dayOfWeek = dateTime ? daysOfTheWeek[dateTime.getUTCDay()] : null;
                 locationError,
                 locationLoading,
                 city,
+                state,
                 condition,
                 description,
                 tempC,
