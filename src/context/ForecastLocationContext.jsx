@@ -7,7 +7,7 @@ import getClosestEntry from '../utils/getClosestEntry';
 const ForecastLocationContext = createContext();
 
 export const ForecastLocationProvider = ({ children }) => {
-  const { currentLat, currentLon } = useCurrentContext();
+  const { currentLat, currentLon, daysOfTheWeek } = useCurrentContext();
   const {
     forecastWeather,
     error: forecastError,
@@ -26,15 +26,6 @@ export const ForecastLocationProvider = ({ children }) => {
   function groupByDay(data) {
     const days = {};
     const timeZoneOffset = data.city.timezone || 0; // seconds
-    const daysOfTheWeek = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday"
-    ];
 
     data.list.forEach((item) => {
       const dateTime = new Date((item.dt + timeZoneOffset) * 1000);
@@ -67,7 +58,7 @@ export const ForecastLocationProvider = ({ children }) => {
         dateTime,
         time,
         date,
-        day: dayOfWeek,
+        dayOfWeek,
       };
 
       if (!days[date]) {
@@ -105,7 +96,7 @@ export const ForecastLocationProvider = ({ children }) => {
 
       result.push({
         date: selectedEntry.date,
-        day: selectedEntry.day,
+        dayOfWeek: selectedEntry.dayOfWeek,
         time: selectedEntry.time,
         tempMinC,
         tempMaxC,
