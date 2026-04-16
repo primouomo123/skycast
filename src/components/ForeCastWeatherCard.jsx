@@ -7,13 +7,19 @@ function ForecastWeatherCard( {dayData} ) {
     <Card
       sx={{
         width: "100%",
-        mx: 0,
+        maxWidth: 181,
+        maxHeight: 350,
+        minHeight: 220,
+        mx: "auto",
         borderRadius: 4,
         p: 3,
         boxShadow: 4,
         background: "rgba(255,255,255,0.9)",
         backdropFilter: "blur(6px)",
-        marginTop: 10
+        marginTop: 2,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between"
       }}
     >
       <CardContent >
