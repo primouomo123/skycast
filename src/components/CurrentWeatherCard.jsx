@@ -44,12 +44,12 @@ function CurrentWeatherCard() {
         borderRadius: 4,
         p: 3,
         boxShadow: 4,
-        background: "rgba(255,255,255,0.9)",
         backdropFilter: "blur(6px)",
         marginTop: 10,
         display: "flex",
         flexDirection: "column",
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: 'background.paper', // Use theme paper color
       }}
     >
 

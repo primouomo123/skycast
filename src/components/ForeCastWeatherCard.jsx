@@ -15,12 +15,11 @@ function ForecastWeatherCard( {dayData} ) {
         borderRadius: 4,
         p: 3,
         boxShadow: 4,
-        background: "rgba(255,255,255,0.9)",
         backdropFilter: "blur(6px)",
         marginTop: 2,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
       }}
     >
       <CardContent >
