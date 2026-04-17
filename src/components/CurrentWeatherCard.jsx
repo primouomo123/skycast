@@ -7,9 +7,13 @@ function CurrentWeatherCard() {
     state,
     country,
     tempC,
+    tempF,
     feelsLikeC,
+    feelsLikeF,
     tempMaxC,
+    tempMaxF,
     tempMinC,
+    tempMinF,
     humidity,
     condition,
     description,
@@ -19,6 +23,7 @@ function CurrentWeatherCard() {
     dayOfWeek,
     weatherLoading,
     weatherError,
+    isCelsius
   } = useCurrentContext();
 
   if (weatherLoading || tempC == null || city == null) {
@@ -117,22 +122,22 @@ function CurrentWeatherCard() {
           {/* CENTER SECTION */}
           <Box sx={{ flex: 1, textAlign: "center", minWidth: 0 }}>
             <Typography variant="h2" fontWeight={700} lineHeight={1}>
-              {tempC}°
+              {isCelsius ? `${tempC}°C` : `${tempF}°F`}
             </Typography>
 
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Feels like {feelsLikeC}°
+              Feels like {isCelsius ? `${feelsLikeC}°C` : `${feelsLikeF}°F`}
             </Typography>
           </Box>
 
           {/* RIGHT SECTION */}
           <Box sx={{ flex: 1, textAlign: "right", minWidth: 0 }}>
             <Typography variant="body2" color="text.secondary">
-              Min: <strong>{tempMinC}°</strong>
+              Min: <strong>{isCelsius ? `${tempMinC}°C` : `${tempMinF}°F`}</strong>
             </Typography>
 
             <Typography variant="body2" color="text.secondary">
-              Max: <strong>{tempMaxC}°</strong>
+              Max: <strong>{isCelsius ? `${tempMaxC}°C` : `${tempMaxF}°F`}</strong>
             </Typography>
 
             <Typography variant="body2" color="text.secondary">

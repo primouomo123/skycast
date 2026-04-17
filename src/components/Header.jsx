@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useCurrentContext } from "../context/CurrentLocationContext";
 
 import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
@@ -7,8 +6,8 @@ import WbCloudyIcon from "@mui/icons-material/WbCloudy";
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 
-function Header() {
-  const { setCurrentLat, setCurrentLon, isDarkMode, handleThemeToggle } = useCurrentContext();
+function Header({ isDarkMode, handleThemeToggle }) {
+  const { isCelsius, handleUnitToggle } = useCurrentContext();
 
   return (
     <AppBar position="fixed">
@@ -16,12 +15,15 @@ function Header() {
         
         {/* Left: User Location's Weather*/}
         <Box sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
-          <WbCloudyIcon />
+          <IconButton color="inherit" onClick={handleUnitToggle} sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            {isCelsius ? "°C" : "°F"}
+          </IconButton>
         </Box>
         
 
         {/* Center: Title */}
         <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <WbCloudyIcon />
           <Typography variant="h4">SkyCast</Typography>
         </Box>
 

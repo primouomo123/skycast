@@ -1,4 +1,4 @@
-export function celsiusToFahrenheit(celsius) {
+export default function celsiusToFahrenheit(celsius) {
     const value = Number(celsius);
     if (isNaN(value)) {
         return null

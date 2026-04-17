@@ -9,7 +9,7 @@ function ForecastLayout() {
     forecastLoading,
    } = useForecastContext();
 
-   if (forecastLoading || forecastData == null) {
+   if (forecastLoading || forecastData == null || forecastData.length === 0) {
     return (
       <CircularProgress sx={{ display: "block", mx: "auto", mt: 5 }} />
     )
@@ -17,10 +17,6 @@ function ForecastLayout() {
 
    if (forecastError) {
     return <div>Error: {forecastError}</div>;
-   }
-
-   if (forecastData.length === 0) {
-    return <div>No forecast data available.</div>;
    }
 
    const content = forecastData.map((dayData) => (
