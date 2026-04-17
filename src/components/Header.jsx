@@ -7,8 +7,8 @@ import WbCloudyIcon from "@mui/icons-material/WbCloudy";
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 
-function Header({  onDarkModeToggle, isDarkMode }) {
-  const { setCurrentLat, setCurrentLon } = useCurrentContext();
+function Header() {
+  const { setCurrentLat, setCurrentLon, isDarkMode, handleThemeToggle } = useCurrentContext();
 
   return (
     <AppBar position="fixed">
@@ -26,7 +26,7 @@ function Header({  onDarkModeToggle, isDarkMode }) {
         </Box>
 
         {/* Right: Actions */}
-        <IconButton color="inherit" onClick={onDarkModeToggle} sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
+        <IconButton color="inherit" onClick={handleThemeToggle} sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
           {isDarkMode ? <DarkModeIcon sx={{color: "black"}} /> : <LightModeIcon sx={{color: "yellow"}} />} {isDarkMode ? "Dark" : "Light"} mode
         </IconButton>
 

@@ -17,6 +17,12 @@ export const CurrentLocationProvider = ({ children }) => {
     const [searchedCity, setSearchedCity] = useState(null);
     const [searchedState, setSearchedState] = useState(null);
 
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    
+    const handleThemeToggle = () => {
+        setIsDarkMode((prev) => !prev);
+      };
+
     useEffect(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -131,7 +137,9 @@ const dayOfWeek = dateTime ? daysOfTheWeek[dateTime.getUTCDay()] : null;
                 tempMinC,
                 tempMaxC,
                 humidity,
-                daysOfTheWeek
+                daysOfTheWeek,
+                isDarkMode,
+                handleThemeToggle
             }}
         >
             {children}

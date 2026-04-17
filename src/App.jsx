@@ -10,17 +10,12 @@ import SearchBar from './components/SearchBar';
 
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const handleThemeToggle = () => {
-    setIsDarkMode((prev) => !prev);
-  };
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <CssBaseline />
       <Container maxWidth='lg'>
-        <Header onDarkModeToggle={handleThemeToggle} isDarkMode={isDarkMode} />
+        <Header  />
         <SearchBar  />
         <CurrentWeatherCard />
         <ForecastLayout />
