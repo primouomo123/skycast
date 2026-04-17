@@ -1,7 +1,7 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import useRetrieveCurrentWeather from '../hooks/useRetrieveCurrentWeather';
 import useRetrieveLocation from '../hooks/useRetrieveLocation';
-import { celsiusToFahrenheit } from '../utils/celsiusToFahrenheit';
+import celsiusToFahrenheit from '../utils/celsiusToFahrenheit';
 
 import getWeatherIcon from '../utils/getWeatherIcon';
 import useGetState from '../hooks/useGetState';

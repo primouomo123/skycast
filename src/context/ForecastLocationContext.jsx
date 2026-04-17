@@ -3,6 +3,7 @@ import useRetrieveForecastWeather from '../hooks/useRetrieveForecastWeather';
 import { useCurrentContext } from './CurrentLocationContext';
 import getWeatherIcon from '../utils/getWeatherIcon';
 import getClosestEntry from '../utils/getClosestEntry';
+import celsiusToFahrenheit from '../utils/celsiusToFahrenheit';
 
 const ForecastLocationContext = createContext();
 
@@ -48,9 +49,13 @@ export const ForecastLocationProvider = ({ children }) => {
 
       const entry = {
         tempC: Math.round(item.main.temp),
+        tempF: Math.round(celsiusToFahrenheit(item.main.temp)),
         feelsLikeC: Math.round(item.main.feels_like),
+        feelsLikeF: Math.round(celsiusToFahrenheit(item.main.feels_like)),
         tempMinC: Math.round(item.main.temp_min),
+        tempMinF: Math.round(celsiusToFahrenheit(item.main.temp_min)),
         tempMaxC: Math.round(item.main.temp_max),
+        tempMaxF: Math.round(celsiusToFahrenheit(item.main.temp_max)),
         condition: item.weather[0].main,
         description: item.weather[0].description,
         icon: getWeatherIcon(item.weather[0].icon),
@@ -90,6 +95,8 @@ export const ForecastLocationProvider = ({ children }) => {
 
       const tempMinC = Math.min(...entries.map((e) => e.tempMinC));
       const tempMaxC = Math.max(...entries.map((e) => e.tempMaxC));
+      const tempMinF = Math.min(...entries.map((e) => e.tempMinF));
+      const tempMaxF = Math.max(...entries.map((e) => e.tempMaxF));
 
       // Pick entry closest to 3 PM, then 12 PM
       const selectedEntry = getClosestEntry(entries, [15, 12]);
@@ -100,6 +107,8 @@ export const ForecastLocationProvider = ({ children }) => {
         time: selectedEntry.time,
         tempMinC,
         tempMaxC,
+        tempMinF,
+        tempMaxF,
         condition: selectedEntry.condition,
         icon: selectedEntry.icon,
         description: selectedEntry.description,

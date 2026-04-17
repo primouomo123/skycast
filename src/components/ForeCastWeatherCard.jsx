@@ -2,6 +2,7 @@ import { Card, CardContent, Typography, Box, Divider, CircularProgress } from "@
 import { useCurrentContext } from "../context/CurrentLocationContext";
 
 function ForecastWeatherCard( {dayData} ) {
+  const { isCelsius } = useCurrentContext();
 
   return (
     <Card
@@ -54,7 +55,7 @@ function ForecastWeatherCard( {dayData} ) {
                 {dayData.condition}
               </Typography>
 
-              <Typography variant="body3" color="text.secondary">
+              <Typography variant="body2" color="text.secondary">
                 {dayData.description}
               </Typography>
 
@@ -66,13 +67,14 @@ function ForecastWeatherCard( {dayData} ) {
 
           {/* CENTER SECTION */}
           <Box flex={1} textAlign="center">
-            <Typography variant="h6" fontWeight={700} lineHeight={1}>
-              Min: {dayData.tempMinC}°
+            <Typography variant="h5" fontWeight={700} lineHeight={1}>
+              Min: {isCelsius ? dayData.tempMinC : dayData.tempMinF}°
             </Typography>
 
-            <Typography variant="h6" color="text.secondary" sx={{ mt: 1 }}>
-              Max: {dayData.tempMaxC}°
+            <Typography variant="h5" color="text.secondary" sx={{ mt: 1 }}>
+              Max: {isCelsius ? dayData.tempMaxC : dayData.tempMaxF}°
             </Typography>
+
           </Box>
 
         </Box>
