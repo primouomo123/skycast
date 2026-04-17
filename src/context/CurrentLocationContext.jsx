@@ -1,6 +1,7 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import useRetrieveCurrentWeather from '../hooks/useRetrieveCurrentWeather';
 import useRetrieveLocation from '../hooks/useRetrieveLocation';
+import { celsiusToFahrenheit } from '../utils/celsiustoFahrenheit';
 
 import getWeatherIcon from '../utils/getWeatherIcon';
 import useGetState from '../hooks/useGetState';
@@ -17,11 +18,11 @@ export const CurrentLocationProvider = ({ children }) => {
     const [searchedCity, setSearchedCity] = useState(null);
     const [searchedState, setSearchedState] = useState(null);
 
-    const [isDarkMode, setIsDarkMode] = useState(false);
-    
-    const handleThemeToggle = () => {
-        setIsDarkMode((prev) => !prev);
-      };
+    const [isCelsius, setIsCelsius] = useState(false);
+
+    const handleUnitToggle = () => {
+        setIsCelsius((prev) => !prev);
+    };
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -83,9 +84,13 @@ export const CurrentLocationProvider = ({ children }) => {
     const icon = getWeatherIcon(weatherData?.weather?.[0]?.icon) || null;
     const description = weatherData?.weather?.[0]?.description || null;
     const tempC = weatherData?.main?.temp ? Math.round(weatherData.main.temp) : null;
+    const tempF = tempC !== null ? Math.round(celsiusToFahrenheit(tempC)) : null;
     const feelsLikeC = weatherData?.main?.feels_like ? Math.round(weatherData.main.feels_like) : null;
+    const feelsLikeF = feelsLikeC !== null ? Math.round(celsiusToFahrenheit(feelsLikeC)) : null;
     const tempMinC = weatherData?.main?.temp_min ? Math.round(weatherData.main.temp_min) : null;
+    const tempMinF = tempMinC !== null ? Math.round(celsiusToFahrenheit(tempMinC)) : null;
     const tempMaxC = weatherData?.main?.temp_max ? Math.round(weatherData.main.temp_max) : null;
+    const tempMaxF = tempMaxC !== null ? Math.round(celsiusToFahrenheit(tempMaxC)) : null;
     const humidity = weatherData?.main?.humidity || null;
     const country = weatherData?.sys?.country || null;
     const timezone = weatherData?.timezone || null;
@@ -125,6 +130,7 @@ const dayOfWeek = dateTime ? daysOfTheWeek[dateTime.getUTCDay()] : null;
                 condition,
                 description,
                 tempC,
+                tempF,
                 icon,
                 country,
                 weatherError,
@@ -134,12 +140,16 @@ const dayOfWeek = dateTime ? daysOfTheWeek[dateTime.getUTCDay()] : null;
                 date,
                 dayOfWeek,
                 feelsLikeC,
+                feelsLikeF,
                 tempMinC,
+                tempMinF,
                 tempMaxC,
+                tempMaxF,
                 humidity,
                 daysOfTheWeek,
-                isDarkMode,
-                handleThemeToggle
+                isCelsius,
+                handleUnitToggle
+
             }}
         >
             {children}
