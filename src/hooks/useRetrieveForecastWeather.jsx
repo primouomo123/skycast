@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios';
 
+const forecastWeatherEndpoint = import.meta.env.VITE_FORECAST_WEATHER_ENDPOINT;
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
 function useRetrieveForecastWeather() {
@@ -18,7 +19,7 @@ function useRetrieveForecastWeather() {
                 throw new Error('Latitude and longitude are required');
             }
 
-            const response = await axios.get(`https://api.openweathermap.org/data/2.5/forecast`, {
+            const response = await axios.get(forecastWeatherEndpoint, {
                 params: {
                     lat: lat,
                     lon: lon,

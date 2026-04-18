@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
+const getStateEndpoint = import.meta.env.VITE_GET_STATE_ENDPOINT;
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
 export default function useGetState() {
@@ -8,7 +9,7 @@ export default function useGetState() {
     
     async function fetchState(lat, lon) {
         try {
-            const response = await axios.get(`https://api.openweathermap.org/geo/1.0/reverse`, {
+            const response = await axios.get(getStateEndpoint, {
                 params: {
                     lat: lat,
                     lon: lon,

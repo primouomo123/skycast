@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios';
 
+const retrieveLocationEndpoint = import.meta.env.VITE_RETRIEVE_LOCATION_ENDPOINT;
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
 function useRetrieveLocation() {
@@ -21,7 +22,7 @@ function useRetrieveLocation() {
                 throw new Error('City and state are required');
             }
 
-            const response = await axios.get(`https://api.openweathermap.org/geo/1.0/direct`, {
+            const response = await axios.get(retrieveLocationEndpoint, {
                 params: {
                     q: `${city.trim()},${state.trim()},US`,
                     limit: 1,
