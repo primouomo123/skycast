@@ -66,11 +66,11 @@ function ForecastWeatherCard( {dayData} ) {
 
           {/* CENTER SECTION */}
           <Box flex={1} textAlign="center">
-            <Typography variant="h5" fontWeight={700} lineHeight={1}>
+            <Typography variant="h6" fontWeight={700} lineHeight={1}>
               Min: {isCelsius ? dayData.tempMinC : dayData.tempMinF}°
             </Typography>
 
-            <Typography variant="h5" color="text.secondary" sx={{ mt: 1 }}>
+            <Typography variant="h6" color="text.secondary" sx={{ mt: 1 }}>
               Max: {isCelsius ? dayData.tempMaxC : dayData.tempMaxF}°
             </Typography>
 
