@@ -1,3 +1,4 @@
+/*
 import { useState } from "react";
 import {
   Box,
@@ -73,3 +74,4 @@ const handleSearch = () => {
 };
 
 export default SearchBar;
+*/

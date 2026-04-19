@@ -1,3 +1,4 @@
+/*
 import { Card, CardContent, Typography, Box, Divider, CircularProgress } from "@mui/material";
 import { useCurrentContext } from "../context/CurrentLocationContext";
 
@@ -24,14 +25,14 @@ function ForecastWeatherCard( {dayData} ) {
     >
       <CardContent >
 
-        {/* HEADER */}
+        {/* HEADER }
         <Box mb={3} textAlign="center">
           <Typography variant="h5" fontWeight={700}>
             {dayData.dayOfWeek}
           </Typography>
         </Box>
 
-        {/* MAIN CONTENT */}
+        {/* MAIN CONTENT }
         <Box
           display="flex"
           justifyContent="space-between"
@@ -39,7 +40,7 @@ function ForecastWeatherCard( {dayData} ) {
           gap={4}
         >
 
-          {/* LEFT SECTION */}
+          {/* LEFT SECTION }
           <Box flex={1} display="flex" alignItems="center" gap={2}>
             {dayData.icon && (
               <img
@@ -64,7 +65,7 @@ function ForecastWeatherCard( {dayData} ) {
             </Box>
           </Box>
 
-          {/* CENTER SECTION */}
+          {/* CENTER SECTION }
           <Box flex={1} textAlign="center">
             <Typography variant="h6" fontWeight={700} lineHeight={1}>
               Min: {isCelsius ? dayData.tempMinC : dayData.tempMinF}°
@@ -84,3 +85,5 @@ function ForecastWeatherCard( {dayData} ) {
 }
 
 export default ForecastWeatherCard;
+
+*/

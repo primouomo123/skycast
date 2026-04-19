@@ -4,8 +4,6 @@ import { lightTheme, darkTheme } from './style/theme';
 
 import Header from './components/Header'
 import CurrentWeatherCard from './components/CurrentWeatherCard';
-import ForecastLayout from './components/ForecastLayOut';
-import SearchBar from './components/SearchBar';
 
 
 
@@ -21,9 +19,7 @@ function App() {
       <CssBaseline />
       <Container maxWidth='lg'>
         <Header  isDarkMode={isDarkMode} handleThemeToggle={handleThemeToggle} />
-        <SearchBar  />
         <CurrentWeatherCard />
-        <ForecastLayout />
       </Container>
     </ThemeProvider>
   );

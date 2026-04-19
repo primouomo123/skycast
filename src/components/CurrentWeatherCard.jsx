@@ -1,32 +1,36 @@
-import { Card, CardContent, Typography, Box, Divider, CircularProgress } from "@mui/material";
-import { useCurrentContext } from "../context/CurrentLocationContext";
+import { Typography, Box, Divider, CircularProgress } from "@mui/material";
+import { useWeatherContext } from "../context/FullLocationWeatherContext";
 
 function CurrentWeatherCard() {
   const {
+    isCelsius,
     city,
     state,
     country,
-    tempC,
-    tempF,
-    feelsLikeC,
-    feelsLikeF,
-    tempMaxC,
-    tempMaxF,
-    tempMinC,
-    tempMinF,
-    humidity,
-    condition,
-    description,
-    icon,
-    time,
-    date,
-    dayOfWeek,
+    currentCondition,
+    currentDescription,
+    currentIcon,
+    currentTempC,
+    currentTempF,
+    currentFeelsLikeC,
+    currentFeelsLikeF,
+    currentHumidity,
+    currentWindSpeedKPH,
+    currentWindSpeedMPH,
+    currentWindGustKPH,
+    currentWindGustMPH,
+    currentTime,
+    currentDayOfWeek,
+    currentDate,
     weatherLoading,
+    locationLoading,
+    getLoading,
     weatherError,
-    isCelsius
-  } = useCurrentContext();
+    locationError,
+    getError
+  } = useWeatherContext();
 
-  if (weatherLoading || tempC == null || city == null) {
+  if (weatherLoading || locationLoading || getLoading) {
     return (
       <CircularProgress sx={{ display: "block", mx: "auto", mt: 5 }} />
     );
@@ -34,6 +38,14 @@ function CurrentWeatherCard() {
 
   if (weatherError) {
     return <div>Error: {weatherError}</div>;
+  }
+
+  if (locationError) {
+    return <div>Error: {locationError}</div>;
+  }
+
+  if (getError) {
+    return <div>Error: {getError}</div>;
   }
 
   return (
@@ -66,11 +78,11 @@ function CurrentWeatherCard() {
         }}
       >
         <Typography variant="h4" fontWeight={700}>
-          {city}, {state ? `${state}, ` : ""}{country}
+           {city ? `${city}, ${state ? `${state}, ` : ""}${country ?? ""}` : "Unknown Location"}
         </Typography>
 
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-          {dayOfWeek}, {date} • {time}
+          {currentDayOfWeek}, {currentDate} • {currentTime}
         </Typography>
       </Box>
 
@@ -91,9 +103,9 @@ function CurrentWeatherCard() {
 
           {/* LEFT SECTION */}
           <Box sx={{ flex: 1, display: "flex", alignItems: "center", gap: 2, minWidth: 0 }}>
-            {icon && (
+            {currentIcon && (
               <img
-                src={icon}
+                src={currentIcon}
                 alt="Weather Icon"
                 style={{ width: 75, height: 75, flexShrink: 0 }}
               />
@@ -101,7 +113,7 @@ function CurrentWeatherCard() {
 
             <Box sx={{ minWidth: 0 }}>
               <Typography variant="h6" fontWeight={600} noWrap>
-                {condition}
+                {currentCondition}
               </Typography>
 
               <Typography
@@ -113,7 +125,7 @@ function CurrentWeatherCard() {
                   textOverflow: "ellipsis"
                 }}
               >
-                {description}
+                {currentDescription}
               </Typography>
 
             </Box>
@@ -122,26 +134,26 @@ function CurrentWeatherCard() {
           {/* CENTER SECTION */}
           <Box sx={{ flex: 1, textAlign: "center", minWidth: 0 }}>
             <Typography variant="h2" fontWeight={700} lineHeight={1}>
-              {isCelsius ? `${tempC}°C` : `${tempF}°F`}
+              {isCelsius ? `${currentTempC}°C` : `${currentTempF}°F`}
             </Typography>
 
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Feels like {isCelsius ? `${feelsLikeC}°C` : `${feelsLikeF}°F`}
+              Feels like {isCelsius ? `${currentFeelsLikeC}°C` : `${currentFeelsLikeF}°F`}
             </Typography>
           </Box>
 
           {/* RIGHT SECTION */}
           <Box sx={{ flex: 1, textAlign: "right", minWidth: 0 }}>
             <Typography variant="body2" color="text.secondary">
-              Min: <strong>{isCelsius ? `${tempMinC}°C` : `${tempMinF}°F`}</strong>
+              Wind Speed: <strong>{isCelsius ? `${currentWindSpeedKPH} km/h` : `${currentWindSpeedMPH} mph`}</strong>
             </Typography>
 
             <Typography variant="body2" color="text.secondary">
-              Max: <strong>{isCelsius ? `${tempMaxC}°C` : `${tempMaxF}°F`}</strong>
+              Wind Gust: <strong>{isCelsius ? `${currentWindGustKPH} km/h` : `${currentWindGustMPH} mph`}</strong>
             </Typography>
 
             <Typography variant="body2" color="text.secondary">
-              Humidity: <strong>{humidity}%</strong>
+              Humidity: <strong>{currentHumidity}%</strong>
             </Typography>
           </Box>
 

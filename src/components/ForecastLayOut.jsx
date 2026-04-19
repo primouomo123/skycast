@@ -1,3 +1,4 @@
+/*
 import { Grid, CircularProgress } from '@mui/material';
 import ForecastWeatherCard from './ForeCastWeatherCard';
 import { useForecastContext } from '../context/ForecastLocationContext';
@@ -44,3 +45,4 @@ function ForecastLayout() {
 }
 
 export default ForecastLayout;
+*/
