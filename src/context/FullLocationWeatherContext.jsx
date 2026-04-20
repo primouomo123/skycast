@@ -141,8 +141,56 @@ export function FullLocationWeatherProvider({ children }) {
             currentDayOfWeek,
             currentDate
         }
-    }, [weatherData, fetchedCity, fetchedState, fetchedCountry]);
+    }, [weatherData]);
     // ---------Current Weather Logic ends here---------
+
+
+    // ----------Daily Forecast Logic starts here---------
+    const dailyForecast = useMemo(() => {
+        if (!weatherData || !weatherData.daily) return [];
+
+        const dailyWeather = weatherData.daily.map((day) => {
+            const dailyMinTempC = Math.round(day.temp.min);
+            const dailyMinTempF = Math.round(celsiusToFahrenheit(day.temp.min));
+            const dailyMaxTempC = Math.round(day.temp.max);
+            const dailyMaxTempF = Math.round(celsiusToFahrenheit(day.temp.max));
+            const dailyCondition = day.weather && day.weather.length > 0 ? day.weather[0].main : null;
+            const dailyDescription = day.weather && day.weather.length > 0 ? day.weather[0].description : null;
+            const dailyIcon = day.weather && day.weather.length > 0 ? getWeatherIcon(day.weather[0].icon) : null;
+            const dailyHumidity = day.humidity;
+
+            const dailyDateTime = new Date((day.dt + weatherData.timezone_offset) * 1000);
+            
+            const dailyDayOfWeek = dailyDateTime ? daysOfTheWeek[dailyDateTime.getUTCDay()] : null;
+
+            const dailyDate = dailyDateTime
+                ? dailyDateTime.getUTCFullYear() +
+                    "-" +
+                    String(dailyDateTime.getUTCMonth() + 1).padStart(2, "0") +
+                    "-" +
+                    String(dailyDateTime.getUTCDate()).padStart(2, "0")
+                : null;
+            
+            return {
+                dailyMinTempC,
+                dailyMinTempF,
+                dailyMaxTempC,
+                dailyMaxTempF,
+                dailyCondition,
+                dailyDescription,
+                dailyIcon,
+                dailyHumidity,
+                dailyDateTime,
+                dailyDayOfWeek,
+                dailyDate
+            }
+        });
+
+        return dailyWeather;
+    }, [weatherData]);
+
+
+    // ----------Daily Forecast Logic ends here---------
     
 
     const value = {
@@ -165,7 +213,8 @@ export function FullLocationWeatherProvider({ children }) {
         locationLoading,
         weatherError,
         weatherLoading,
-        ...currentWeather
+        ...currentWeather,
+        dailyForecast
     }
 
     return (
