@@ -48,7 +48,7 @@ export function FullLocationWeatherProvider({ children }) {
         if (searchedCity && searchedState && searchedCountry) {
             fetchLocation(searchedCity, searchedState, searchedCountry);
         }
-        }, [searchedCity, searchedState, searchedCountry, fetchLocation]);
+        }, [searchedCity, searchedState, searchedCountry]);
     
     useEffect(() => {
     if (lat !== null && lon !== null) {
@@ -67,7 +67,7 @@ export function FullLocationWeatherProvider({ children }) {
         if (currentLat !== null && currentLon !== null) {
             fetchFullWeather(currentLat, currentLon);
         }
-    }, [currentLat, currentLon, fetchFullWeather]);
+    }, [currentLat, currentLon]);
 
     const daysOfTheWeek = [
       "Sunday",
