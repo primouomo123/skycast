@@ -1,4 +1,4 @@
-import { useCurrentContext } from "../context/CurrentLocationContext";
+import { useWeatherContext } from "../context/FullLocationWeatherContext";
 
 import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
 import Box from '@mui/material/Box';
@@ -7,7 +7,7 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 
 function Header({ isDarkMode, handleThemeToggle }) {
-  const { isCelsius, handleUnitToggle } = useCurrentContext();
+  const { isCelsius, handleUnitToggle } = useWeatherContext();
 
   return (
     <AppBar position="fixed">

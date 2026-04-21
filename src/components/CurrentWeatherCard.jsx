@@ -1,152 +1,222 @@
-import { Card, CardContent, Typography, Box, Divider, CircularProgress } from "@mui/material";
-import { useCurrentContext } from "../context/CurrentLocationContext";
+import { Typography, Box, Divider, CircularProgress } from "@mui/material";
+import AirOutlinedIcon from "@mui/icons-material/AirOutlined";
+import WaterDropOutlinedIcon from "@mui/icons-material/WaterDropOutlined";
+import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
+import { useWeatherContext } from "../context/FullLocationWeatherContext";
 
 function CurrentWeatherCard() {
   const {
+    isCelsius,
     city,
     state,
     country,
-    tempC,
-    tempF,
-    feelsLikeC,
-    feelsLikeF,
-    tempMaxC,
-    tempMaxF,
-    tempMinC,
-    tempMinF,
-    humidity,
-    condition,
-    description,
-    icon,
-    time,
-    date,
-    dayOfWeek,
+    currentCondition,
+    currentDescription,
+    currentIcon,
+    currentTempC,
+    currentTempF,
+    currentFeelsLikeC,
+    currentFeelsLikeF,
+    currentHumidity,
+    currentWindSpeedKPH,
+    currentWindSpeedMPH,
+    currentWindGustKPH,
+    currentWindGustMPH,
+    currentTime,
+    currentDayOfWeek,
+    currentDate,
     weatherLoading,
+    locationLoading,
+    getLoading,
     weatherError,
-    isCelsius
-  } = useCurrentContext();
+    locationError,
+    getError
+  } = useWeatherContext();
 
-  if (weatherLoading || tempC == null || city == null) {
-    return (
-      <CircularProgress sx={{ display: "block", mx: "auto", mt: 5 }} />
-    );
+  if (
+    weatherLoading ||
+    locationLoading ||
+    getLoading ||
+    currentTempC == null ||
+    currentTempF == null
+  ) {
+    return <CircularProgress sx={{ display: "block", mx: "auto", mt: 5 }} />;
   }
 
-  if (weatherError) {
-    return <div>Error: {weatherError}</div>;
-  }
+  if (weatherError) return <div>Error: {weatherError}</div>;
+  if (locationError) return <div>Error: {locationError}</div>;
+  if (getError) return <div>Error: {getError}</div>;
 
   return (
     <Box
       sx={{
         width: "100%",
-        mx: 0,
-        borderRadius: 4,
-        p: 3,
-        boxShadow: 4,
-        backdropFilter: "blur(6px)",
-        marginTop: 10,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        backgroundColor: 'background.paper', // Use theme paper color
+        borderRadius: 5,
+        p: { xs: 2.5, md: 4 },
+        mt: 10,
+        background: (theme) =>
+          theme.palette.mode === "dark"
+            ? "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)"
+            : "linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.72) 100%)",
+        border: "1px solid",
+        borderColor: "divider",
+        boxShadow: (theme) =>
+          theme.palette.mode === "dark"
+            ? "0 16px 40px rgba(0,0,0,0.35)"
+            : "0 16px 40px rgba(15,23,42,0.08)",
+        backdropFilter: "blur(16px)",
       }}
     >
-
-      {/* HEADER */}
       <Box
-        mb={3}
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          textAlign: "center"
+          mb: 3,
+          textAlign: "center",
         }}
       >
-        <Typography variant="h4" fontWeight={700}>
-          {city}, {state ? `${state}, ` : ""}{country}
+        <Typography variant="overline" color="text.secondary" sx={{ letterSpacing: 2 }}>
+          Current Weather
         </Typography>
 
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-          {dayOfWeek}, {date} • {time}
+        <Typography variant="h4" fontWeight={800}>
+          {city ? `${city}, ${state ? `${state}, ` : ""}${country ?? ""}` : "Unknown Location"}
+        </Typography>
+
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.75 }}>
+          {currentDayOfWeek}, {currentDate} • {currentTime}
         </Typography>
       </Box>
 
-      <Divider sx={{ mb: 3, width: "100%" }} />
+      <Divider sx={{ mb: 3 }} />
 
-        {/* MAIN CONTENT WRAPPER — THIS FIXES EVERYTHING */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 4,
+        }}
+      >
         <Box
           sx={{
+            flex: 1,
             display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
             alignItems: "center",
-            gap: 4,
-            width: "100%",
-            flexWrap: "nowrap"
+            justifyContent: { xs: "center", md: "flex-start" },
+            gap: 2,
+            textAlign: { xs: "center", md: "left" },
+            minWidth: 0,
           }}
         >
+          {currentIcon && (
+            <Box
+              component="img"
+              src={currentIcon}
+              alt="Weather Icon"
+              sx={{
+                width: 90,
+                height: 90,
+                flexShrink: 0,
+                filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.12))",
+              }}
+            />
+          )}
 
-          {/* LEFT SECTION */}
-          <Box sx={{ flex: 1, display: "flex", alignItems: "center", gap: 2, minWidth: 0 }}>
-            {icon && (
-              <img
-                src={icon}
-                alt="Weather Icon"
-                style={{ width: 75, height: 75, flexShrink: 0 }}
-              />
-            )}
-
-            <Box sx={{ minWidth: 0 }}>
-              <Typography variant="h6" fontWeight={600} noWrap>
-                {condition}
-              </Typography>
-
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis"
-                }}
-              >
-                {description}
-              </Typography>
-
-            </Box>
-          </Box>
-
-          {/* CENTER SECTION */}
-          <Box sx={{ flex: 1, textAlign: "center", minWidth: 0 }}>
-            <Typography variant="h2" fontWeight={700} lineHeight={1}>
-              {isCelsius ? `${tempC}°C` : `${tempF}°F`}
+          <Box sx={{ minWidth: 0 }}>
+            <Typography variant="h6" fontWeight={700} noWrap>
+              {currentCondition}
             </Typography>
 
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Feels like {isCelsius ? `${feelsLikeC}°C` : `${feelsLikeF}°F`}
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {currentDescription}
             </Typography>
           </Box>
-
-          {/* RIGHT SECTION */}
-          <Box sx={{ flex: 1, textAlign: "right", minWidth: 0 }}>
-            <Typography variant="body2" color="text.secondary">
-              Min: <strong>{isCelsius ? `${tempMinC}°C` : `${tempMinF}°F`}</strong>
-            </Typography>
-
-            <Typography variant="body2" color="text.secondary">
-              Max: <strong>{isCelsius ? `${tempMaxC}°C` : `${tempMaxF}°F`}</strong>
-            </Typography>
-
-            <Typography variant="body2" color="text.secondary">
-              Humidity: <strong>{humidity}%</strong>
-            </Typography>
-          </Box>
-
         </Box>
 
+        <Box sx={{ flex: 1, textAlign: "center", minWidth: 0 }}>
+          <Typography variant="h1" lineHeight={1}>
+            {isCelsius ? `${currentTempC}°C` : `${currentTempF}°F`}
+          </Typography>
+
+          <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+            Feels like {isCelsius ? `${currentFeelsLikeC}°C` : `${currentFeelsLikeF}°F`}
+          </Typography>
+        </Box>
+
+        <Box sx={{ flex: 1, width: "100%" }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1.25 }}>
+            <Box
+              sx={{
+                p: 1.5,
+                borderRadius: 3,
+                backgroundColor: "action.hover",
+                display: "flex",
+                alignItems: "center",
+                gap: 1.25,
+              }}
+            >
+              <AirOutlinedIcon fontSize="small" color="primary" />
+              <Box>
+                <Typography variant="body2" color="text.secondary">
+                  Wind Speed
+                </Typography>
+                <Typography variant="body1" fontWeight={700}>
+                  {isCelsius ? `${currentWindSpeedKPH} km/h` : `${currentWindSpeedMPH} mph`}
+                </Typography>
+              </Box>
+            </Box>
+
+            <Box
+              sx={{
+                p: 1.5,
+                borderRadius: 3,
+                backgroundColor: "action.hover",
+                display: "flex",
+                alignItems: "center",
+                gap: 1.25,
+              }}
+            >
+              <ExploreOutlinedIcon fontSize="small" color="secondary" />
+              <Box>
+                <Typography variant="body2" color="text.secondary">
+                  Wind Gust
+                </Typography>
+                <Typography variant="body1" fontWeight={700}>
+                  {isCelsius ? `${currentWindGustKPH} km/h` : `${currentWindGustMPH} mph`}
+                </Typography>
+              </Box>
+            </Box>
+
+            <Box
+              sx={{
+                p: 1.5,
+                borderRadius: 3,
+                backgroundColor: "action.hover",
+                display: "flex",
+                alignItems: "center",
+                gap: 1.25,
+              }}
+            >
+              <WaterDropOutlinedIcon fontSize="small" color="primary" />
+              <Box>
+                <Typography variant="body2" color="text.secondary">
+                  Humidity
+                </Typography>
+                <Typography variant="body1" fontWeight={700}>
+                  {currentHumidity}%
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 }

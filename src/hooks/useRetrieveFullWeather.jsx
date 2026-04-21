@@ -1,25 +1,24 @@
 import { useState } from 'react'
 import axios from 'axios';
 
-const forecastWeatherEndpoint = import.meta.env.VITE_FORECAST_WEATHER_ENDPOINT;
+const fullWeatherEndpoint = import.meta.env.VITE_RETRIEVE_FULL_WEATHER_ENDPOINT;
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
-function useRetrieveForecastWeather() {
-    const [forecastWeather, setForecastWeather] = useState(null);
-    const [loading, setLoading] = useState(false);
+function useRetrieveFullWeather() {
+    const [weatherData, setWeatherData] = useState(null);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
     
-    async function fetchForecastWeather(lat, lon) {
-        setForecastWeather(null);
+    async function fetchFullWeather(lat, lon) {
+        setWeatherData(null);
         setError(null);
         setLoading(true);
-
         try {
             if (lat == null || lon == null) {
                 throw new Error('Latitude and longitude are required');
             }
 
-            const response = await axios.get(forecastWeatherEndpoint, {
+            const response = await axios.get(fullWeatherEndpoint, {
                 params: {
                     lat: lat,
                     lon: lon,
@@ -27,7 +26,8 @@ function useRetrieveForecastWeather() {
                     appid: apiKey
                 }
             });
-            setForecastWeather(response.data);
+
+            setWeatherData(response.data);
         }
         
         catch (err) {
@@ -37,9 +37,9 @@ function useRetrieveForecastWeather() {
         finally {
             setLoading(false);
         }
-    };
+    }
 
-    return { forecastWeather, loading, error, fetchForecastWeather };
-};
+    return { weatherData, error, fetchFullWeather, loading };
+}
 
-export default useRetrieveForecastWeather;
+export default useRetrieveFullWeather;
