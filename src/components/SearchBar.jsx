@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
-  Box,
   TextField,
   IconButton,
   Paper,
@@ -23,6 +22,13 @@ function SearchBar() {
     setCity("");
     setState("");
   };
+
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
 
   return (
     <Paper
@@ -50,6 +56,7 @@ function SearchBar() {
         onChange={(e) => setCity(e.target.value)}
         fullWidth
         required
+        inputRef={inputRef}
       />
       <TextField
         label="State"
