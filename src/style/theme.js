@@ -1,43 +1,75 @@
 import { createTheme } from '@mui/material/styles';
 
-// Light mode theme
+const sharedTheme = {
+  shape: {
+    borderRadius: 18,
+  },
+  typography: {
+    fontFamily: `'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif`,
+    h1: {
+      fontWeight: 800,
+      letterSpacing: '-0.04em',
+    },
+    h2: {
+      fontWeight: 800,
+      letterSpacing: '-0.03em',
+    },
+    h4: {
+      fontWeight: 700,
+      letterSpacing: '-0.02em',
+    },
+    h6: {
+      fontWeight: 700,
+    },
+    subtitle1: {
+      fontWeight: 600,
+    },
+    body2: {
+      lineHeight: 1.5,
+    },
+  },
+};
+
 export const lightTheme = createTheme({
-	palette: {
-		mode: 'light',
-		primary: {
-			main: '#1976d2',
-		},
-		secondary: {
-			main: '#9c27b0',
-		},
-		background: {
-			default: '#f5f5f5',
-			paper: '#fff',
-		},
-		text: {
-			primary: '#212121',
-			secondary: '#757575',
-		},
-	},
+  ...sharedTheme,
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#3b82f6',
+    },
+    secondary: {
+      main: '#8b5cf6',
+    },
+    background: {
+      default: '#eef4fb',
+      paper: 'rgba(255,255,255,0.75)',
+    },
+    text: {
+      primary: '#0f172a',
+      secondary: '#64748b',
+    },
+    divider: 'rgba(15, 23, 42, 0.08)',
+  },
 });
 
-// Dark mode theme
 export const darkTheme = createTheme({
-	palette: {
-		mode: 'dark',
-		primary: {
-			main: '#90caf9',
-		},
-		secondary: {
-			main: '#ce93d8',
-		},
-		background: {
-			default: '#121212',
-			paper: '#1e1e1e',
-		},
-		text: {
-			primary: '#fff',
-			secondary: '#b0b0b0',
-		},
-	},
+  ...sharedTheme,
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#60a5fa',
+    },
+    secondary: {
+      main: '#a78bfa',
+    },
+    background: {
+      default: '#0b1220',
+      paper: 'rgba(15,23,42,0.78)',
+    },
+    text: {
+      primary: '#f8fafc',
+      secondary: '#94a3b8',
+    },
+    divider: 'rgba(255,255,255,0.08)',
+  },
 });
