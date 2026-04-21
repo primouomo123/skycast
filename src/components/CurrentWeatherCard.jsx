@@ -142,7 +142,7 @@ function CurrentWeatherCard() {
 
         <Box sx={{ flex: 1, textAlign: "center", minWidth: 0 }}>
           <Typography variant="h1" lineHeight={1}>
-            {isCelsius ? `${currentTempC}°` : `${currentTempF}°`}
+            {isCelsius ? `${currentTempC}°C` : `${currentTempF}°F`}
           </Typography>
 
           <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
