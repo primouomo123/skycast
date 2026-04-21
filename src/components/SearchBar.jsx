@@ -1,24 +1,23 @@
-/*
 import { useState } from "react";
 import {
   Box,
   TextField,
   IconButton,
   Paper,
-  MenuItem,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useCurrentContext } from "../context/CurrentLocationContext";
+import { useWeatherContext } from "../context/FullLocationWeatherContext";
 
-function SearchBar({ }) {
+function SearchBar() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  const { setSearchedCity, setSearchedState } = useCurrentContext();
-  
-const handleSearch = () => {
+  const { setSearchedCity, setSearchedState } = useWeatherContext();
+
+  const handleSearch = () => {
     if (city.trim() === "" || state.trim() === "") {
       return;
     }
+
     setSearchedCity(city);
     setSearchedState(state);
     setCity("");
@@ -38,10 +37,9 @@ const handleSearch = () => {
         width: "100%",
         maxWidth: 500,
         mx: "auto",
-        mt: 4,
         p: 1,
         boxShadow: 3,
-        marginTop: 10,
+        mt: 4,
       }}
     >
       <TextField
@@ -62,16 +60,11 @@ const handleSearch = () => {
         sx={{ ml: 2 }}
         required
       />
-      <IconButton
-        type="submit"
-        color="primary"
-        sx={{ ml: 2 }}
-      >
+      <IconButton type="submit" color="primary" sx={{ ml: 2 }}>
         <SearchIcon />
       </IconButton>
     </Paper>
-  )
-};
+  );
+}
 
 export default SearchBar;
-*/
