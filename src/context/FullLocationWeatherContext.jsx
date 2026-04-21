@@ -141,7 +141,7 @@ export function FullLocationWeatherProvider({ children }) {
             currentDayOfWeek,
             currentDate
         }
-    }, [weatherData]);
+    }, [weatherData, fetchedCity, fetchedState, fetchedCountry]);
     // ---------Current Weather Logic ends here---------
 
 
