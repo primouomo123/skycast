@@ -15,8 +15,6 @@ function HourlyForecastLayout() {
 
   if (
     weatherLoading ||
-    locationLoading ||
-    getLoading ||
     hourlyForecast == null ||
     hourlyForecast.length === 0
   ) {

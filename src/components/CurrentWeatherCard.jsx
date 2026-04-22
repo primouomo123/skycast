@@ -35,8 +35,6 @@ function CurrentWeatherCard() {
 
   if (
     weatherLoading ||
-    locationLoading ||
-    getLoading ||
     currentTempC == null ||
     currentTempF == null
   ) {

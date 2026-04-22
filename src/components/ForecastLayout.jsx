@@ -15,8 +15,6 @@ function ForecastLayout() {
 
   if (
     weatherLoading ||
-    locationLoading ||
-    getLoading ||
     dailyForecast == null ||
     dailyForecast.length === 0
   ) {
