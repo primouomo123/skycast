@@ -5,6 +5,7 @@ import { lightTheme, darkTheme } from './style/theme';
 import Header from './components/Header';
 import SearchBar from './components/SearchBar';
 import CurrentWeatherCard from './components/CurrentWeatherCard';
+import HourlyForecastLayout from './components/HourlyForecastLayout';
 import ForecastLayout from './components/ForecastLayout';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
             <SearchBar />
             <CurrentWeatherCard />
+            <HourlyForecastLayout />
             <ForecastLayout />
           </Box>
         </Container>
