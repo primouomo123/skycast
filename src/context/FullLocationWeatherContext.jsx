@@ -46,7 +46,7 @@ export function FullLocationWeatherProvider({ children }) {
 
     useEffect(() => {
         if (searchedCity && searchedState && searchedCountry) {
-            fetchLocation(searchedCity, searchedState);
+            fetchLocation(searchedCity, searchedState, searchedCountry);
         }
         }, [searchedCity, searchedState, searchedCountry]);
     

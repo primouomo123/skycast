@@ -10,21 +10,21 @@ function useRetrieveLocation() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    async function fetchLocation(city, state) {
+    async function fetchLocation(city, state, country = 'US') {
         setLat(null);
         setLon(null);
         setError(null);
         setLoading(true);
         try {
-            if (!city || !state ||
-                typeof city !== "string" || typeof state !== "string" ||
-                city.trim() === "" || state.trim() === "") {
-                throw new Error('City and state are required');
+            if (!city || !state || !country ||
+                typeof city !== "string" || typeof state !== "string" || typeof country !== "string" ||
+                city.trim() === "" || state.trim() === "" || country.trim() === "") {
+                throw new Error('City, state, and country are required');
             }
 
             const response = await axios.get(retrieveLocationEndpoint, {
                 params: {
-                    q: `${city.trim()},${state.trim()},US`,
+                    q: `${city.trim()},${state.trim()},${country.trim()}`,
                     limit: 1,
                     appid: apiKey
                 }
