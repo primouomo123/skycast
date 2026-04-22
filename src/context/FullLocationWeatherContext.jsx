@@ -202,7 +202,7 @@ export function FullLocationWeatherProvider({ children }) {
             const dailyDateTime = new Date((day.dt + weatherData.timezone_offset) * 1000);
             
             const dailyDayOfWeek = dailyDateTime
-                ? dailyDateTime.toLocaleDateString("en-US", { weekday: "long", timeZone: "UTC" })
+                ? dailyDateTime.toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" })
                 : null;
 
             const dailyDate = dailyDateTime
