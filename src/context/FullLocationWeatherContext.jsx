@@ -69,16 +69,6 @@ export function FullLocationWeatherProvider({ children }) {
         }
     }, [currentLat, currentLon]);
 
-    const daysOfTheWeek = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday"
-    ];
-
     // ---------Current Weather Logic starts here---------
     const currentWeather = useMemo(() => {
         if (!weatherData || !weatherData.current) return {};
@@ -103,21 +93,25 @@ export function FullLocationWeatherProvider({ children }) {
         const currentDateTime = new Date((current.dt + weatherData.timezone_offset) * 1000);
 
         const currentTime = currentDateTime
-                ? String(currentDateTime.getUTCHours()).padStart(2, "0") +
-                    ":" +
-                    String(currentDateTime.getUTCMinutes()).padStart(2, "0") +
-                    ":" +
-                    String(currentDateTime.getUTCSeconds()).padStart(2, "0")
-                : null;
+            ? currentDateTime.toLocaleTimeString("en-US", {
+                  hour: "numeric",
+                  minute: "numeric",
+                  hour12: true,
+                  timeZone: "UTC"
+              })
+            : null;
 
-        const currentDayOfWeek = currentDateTime ? daysOfTheWeek[currentDateTime.getUTCDay()] : null;
+        const currentDayOfWeek = currentDateTime
+            ? currentDateTime.toLocaleDateString("en-US", { weekday: "long", timeZone: "UTC" })
+            : null;
 
         const currentDate = currentDateTime
-                ? currentDateTime.getUTCFullYear() +
-                    "-" +
-                    String(currentDateTime.getUTCMonth() + 1).padStart(2, "0") +
-                    "-" +
-                    String(currentDateTime.getUTCDate()).padStart(2, "0")
+                ? currentDateTime.toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                    timeZone: "UTC"
+                })
                 : null;
         
         return {
@@ -144,6 +138,52 @@ export function FullLocationWeatherProvider({ children }) {
     }, [weatherData, fetchedCity, fetchedState, fetchedCountry]);
     // ---------Current Weather Logic ends here---------
 
+    // ---------Hourly Forecast Logic starts here---------
+    const hourlyForecast = useMemo(() => {
+        if (!weatherData || !weatherData.hourly) return [];
+
+        const hourlyWeather = weatherData.hourly.map((hour) => {
+            const hourlyTempC = Math.round(hour.temp);
+            const hourlyTempF = Math.round(celsiusToFahrenheit(hour.temp));
+            const hourlyCondition = hour.weather && hour.weather.length > 0 ? hour.weather[0].main : null;
+            const hourlyDescription = hour.weather && hour.weather.length > 0 ? hour.weather[0].description : null;
+            const hourlyIcon = hour.weather && hour.weather.length > 0 ? getWeatherIcon(hour.weather[0].icon) : null;
+            const hourlyHumidity = hour.humidity;
+            
+            const hourlyDateTime = new Date((hour.dt + weatherData.timezone_offset) * 1000);
+
+            const hourlyDayOfWeek = hourlyDateTime
+                ? hourlyDateTime.toLocaleDateString("en-US", { weekday: "long", timeZone: "UTC" })
+                : null;
+
+            const hourlyTime = hourlyDateTime
+                ? hourlyDateTime.toLocaleTimeString("en-US", {
+                  hour: "numeric",
+                  minute: "numeric",
+                  hour12: true,
+                  timeZone: "UTC"
+              })
+            : null;
+
+            return {
+                hourlyTempC,
+                hourlyTempF,
+                hourlyCondition,
+                hourlyDescription,
+                hourlyIcon,
+                hourlyHumidity,
+                hourlyDateTime,
+                hourlyTime,
+                hourlyDayOfWeek
+            }
+        });
+
+        return hourlyWeather;
+    }, [weatherData]);
+
+
+    // ----------Hourly Forecast Logic ends here---------
+
 
     // ----------Daily Forecast Logic starts here---------
     const dailyForecast = useMemo(() => {
@@ -161,14 +201,17 @@ export function FullLocationWeatherProvider({ children }) {
 
             const dailyDateTime = new Date((day.dt + weatherData.timezone_offset) * 1000);
             
-            const dailyDayOfWeek = dailyDateTime ? daysOfTheWeek[dailyDateTime.getUTCDay()] : null;
+            const dailyDayOfWeek = dailyDateTime
+                ? dailyDateTime.toLocaleDateString("en-US", { weekday: "long", timeZone: "UTC" })
+                : null;
 
             const dailyDate = dailyDateTime
-                ? dailyDateTime.getUTCFullYear() +
-                    "-" +
-                    String(dailyDateTime.getUTCMonth() + 1).padStart(2, "0") +
-                    "-" +
-                    String(dailyDateTime.getUTCDate()).padStart(2, "0")
+                ? dailyDateTime.toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                    timeZone: "UTC"
+                })
                 : null;
             
             return {
@@ -214,7 +257,8 @@ export function FullLocationWeatherProvider({ children }) {
         weatherError,
         weatherLoading,
         ...currentWeather,
-        dailyForecast
+        dailyForecast,
+        hourlyForecast
     }
 
     return (
