@@ -53,7 +53,7 @@ function CurrentWeatherCard() {
         width: "100%",
         borderRadius: 5,
         p: { xs: 2.5, md: 4 },
-        mt: 10,
+        mt: 3,
         background: (theme) =>
           theme.palette.mode === "dark"
             ? "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)"

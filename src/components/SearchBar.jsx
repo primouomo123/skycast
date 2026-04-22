@@ -3,6 +3,7 @@ import {
   TextField,
   IconButton,
   Paper,
+  Box,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useWeatherContext } from "../context/FullLocationWeatherContext";
@@ -29,48 +30,61 @@ function SearchBar() {
     inputRef.current?.focus();
   }, []);
 
-
   return (
-    <Paper
-      component="form"
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSearch();
-      }}
+    <Box
       sx={{
+        position: "sticky",
+        top: 88,
+        zIndex: 1100,
         display: "flex",
-        alignItems: "center",
-        width: "100%",
-        maxWidth: 500,
-        mx: "auto",
-        p: 1,
-        boxShadow: 3,
-        mt: 4,
+        justifyContent: "center",
+        mt: 7,
       }}
     >
-      <TextField
-        label="City"
-        variant="outlined"
-        size="small"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-        fullWidth
-        required
-        inputRef={inputRef}
-      />
-      <TextField
-        label="State"
-        variant="outlined"
-        size="small"
-        value={state}
-        onChange={(e) => setState(e.target.value)}
-        sx={{ ml: 2 }}
-        required
-      />
-      <IconButton type="submit" color="primary" sx={{ ml: 2 }}>
-        <SearchIcon />
-      </IconButton>
-    </Paper>
+      <Paper
+        component="form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSearch();
+        }}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          width: "100%",
+          maxWidth: 500,
+          p: 1,
+          boxShadow: 4,
+          borderRadius: 3,
+          border: "1px solid",
+          borderColor: "divider",
+          backdropFilter: "blur(10px)",
+          backgroundColor: "background.paper",
+        }}
+      >
+        <TextField
+          label="City"
+          variant="outlined"
+          size="small"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          fullWidth
+          required
+          inputRef={inputRef}
+        />
+        <TextField
+          label="State"
+          variant="outlined"
+          size="small"
+          value={state}
+          onChange={(e) => setState(e.target.value)}
+          sx={{ ml: 2, width: 140 }}
+          required
+        />
+        <IconButton type="submit" color="primary" sx={{ ml: 1 }}>
+          <SearchIcon />
+        </IconButton>
+      </Paper>
+    </Box>
   );
 }
 
