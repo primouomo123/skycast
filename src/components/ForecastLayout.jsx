@@ -4,13 +4,7 @@ import { useWeatherContext } from "../context/FullLocationWeatherContext";
 
 function ForecastLayout() {
   const {
-    dailyForecast,
-    weatherLoading,
-    locationLoading,
-    getLoading,
-    weatherError,
-    locationError,
-    getError
+    dailyForecast
   } = useWeatherContext();
 
   return (
