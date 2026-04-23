@@ -13,7 +13,7 @@ function Header({ isDarkMode, handleThemeToggle }) {
     <AppBar position="fixed">
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         
-        {/* Left: User Location's Weather*/}
+        {/* Left: Unit Toggle */}
         <Box sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
           <IconButton color="inherit" onClick={handleUnitToggle} sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
             {isCelsius ? "°F" : "°C"}
@@ -27,7 +27,7 @@ function Header({ isDarkMode, handleThemeToggle }) {
           <Typography variant="h4">SkyCast</Typography>
         </Box>
 
-        {/* Right: Actions */}
+        {/* Right: Theme Toggle */}
         <IconButton color="inherit" onClick={handleThemeToggle} sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
           {isDarkMode ? <LightModeIcon sx={{color: "yellow"}} /> : <DarkModeIcon sx={{color: "black"}} />} {isDarkMode ? "Light" : "Dark"} mode
         </IconButton>
