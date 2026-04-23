@@ -3,15 +3,7 @@ import HourlyWeatherCard from "./HourlyWeatherCard";
 import { useWeatherContext } from "../context/FullLocationWeatherContext";
 
 function HourlyForecastLayout() {
-  const {
-    hourlyForecast,
-    weatherLoading,
-    locationLoading,
-    getLoading,
-    weatherError,
-    locationError,
-    getError,
-  } = useWeatherContext();
+  const { hourlyForecast } = useWeatherContext();
 
   return (
     <Box sx={{ mt: 4, mb: 4 }}>
