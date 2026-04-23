@@ -21,7 +21,7 @@ export default function Dashboard() {
     return <Navigate to="/error" />;
   }
 
-  if (weatherLoading || locationLoading || getLoading || city == null) {
+  if (weatherLoading || city == null) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
         <CircularProgress />
