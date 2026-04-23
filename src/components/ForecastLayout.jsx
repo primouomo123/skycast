@@ -3,9 +3,7 @@ import ForecastWeatherCard from "./ForecastWeatherCard";
 import { useWeatherContext } from "../context/FullLocationWeatherContext";
 
 function ForecastLayout() {
-  const {
-    dailyForecast
-  } = useWeatherContext();
+  const { dailyForecast } = useWeatherContext();
 
   return (
     <Box sx={{ mt: 4, mb: 4 }}>
