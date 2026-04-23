@@ -25,6 +25,7 @@ export function FullLocationWeatherProvider({ children }) {
         setIsCelsius((prev) => !prev);
     };
 
+    // Get user's current location on initial load
     useEffect(() => {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
@@ -43,6 +44,7 @@ export function FullLocationWeatherProvider({ children }) {
             }
         }, []);
     
+    // Fetch city, state, and country based on current latitude and longitude
     useEffect(() => {
         if (currentLat !== null && currentLon !== null) {
             fetchCityStateAndCountry(currentLat, currentLon);
@@ -50,12 +52,15 @@ export function FullLocationWeatherProvider({ children }) {
     }, [currentLat, currentLon]);
     
 
+    // Fetch location data based on searched city, state, and country
     useEffect(() => {
         if (searchedCity && searchedState && searchedCountry) {
             fetchLocation(searchedCity, searchedState, searchedCountry);
         }
         }, [searchedCity, searchedState, searchedCountry]);
     
+    
+    // Update current latitude and longitude when location data is fetched
     useEffect(() => {
     if (lat !== null && lon !== null) {
         setCurrentLat(lat);
@@ -63,6 +68,8 @@ export function FullLocationWeatherProvider({ children }) {
     }
     }, [lat, lon]);
 
+    
+    // Fetch full weather data based on current latitude and longitude
     useEffect(() => {
         if (currentLat !== null && currentLon !== null) {
             fetchFullWeather(currentLat, currentLon);
@@ -136,7 +143,9 @@ export function FullLocationWeatherProvider({ children }) {
             currentDate
         }
     }, [weatherData, fetchedCity, fetchedState, fetchedCountry]);
-    // ---------Current Weather Logic ends here---------
+    // ---------Current Weather Logic ends here-----------
+
+
 
     // ---------Hourly Forecast Logic starts here---------
     const hourlyForecast = useMemo(() => {
@@ -180,8 +189,6 @@ export function FullLocationWeatherProvider({ children }) {
 
         return hourlyWeather;
     }, [weatherData]);
-
-
     // ----------Hourly Forecast Logic ends here---------
 
 
@@ -231,8 +238,6 @@ export function FullLocationWeatherProvider({ children }) {
 
         return dailyWeather;
     }, [weatherData]);
-
-
     // ----------Daily Forecast Logic ends here---------
     
 
@@ -269,4 +274,5 @@ export function FullLocationWeatherProvider({ children }) {
 
 }
 
+// Custom hook to use the FullLocationWeatherContext
 export const useWeatherContext = () => useContext(FullLocationWeatherContext);

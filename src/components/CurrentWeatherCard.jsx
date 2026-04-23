@@ -24,13 +24,7 @@ function CurrentWeatherCard() {
     currentWindGustMPH,
     currentTime,
     currentDayOfWeek,
-    currentDate,
-    weatherLoading,
-    locationLoading,
-    getLoading,
-    weatherError,
-    locationError,
-    getError
+    currentDate
   } = useWeatherContext();
 
   return (
