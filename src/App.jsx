@@ -12,6 +12,7 @@ import { useWeatherContext } from './context/FullLocationWeatherContext';
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const { 
+    city,
     weatherLoading,
     locationLoading,
     getLoading,
@@ -24,16 +25,29 @@ function App() {
     setIsDarkMode((prev) => !prev);
   };
 
+  let content = null;
+
   if (weatherLoading || locationLoading || getLoading) {
-    return <CircularProgress sx={{ display: 'block', mx: 'auto', mt: 20 }} />;
+    content = <CircularProgress sx={{ display: 'block', mx: 'auto', mt: 20 }} />;
   }
 
   else if (weatherError || locationError || getError) {
-    return <div>Error: {weatherError || locationError || getError}</div>;
+    content = <div>Error: {weatherError || locationError || getError}</div>;
   }
 
   else {
-    return (
+    content = (
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <SearchBar />
+            <CurrentWeatherCard />
+            <HourlyForecastLayout />
+            <ForecastLayout />
+          </Box>
+    )
+  }
+  
+
+  return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <CssBaseline />
       <Box
@@ -52,17 +66,11 @@ function App() {
             handleThemeToggle={handleThemeToggle}
           />
 
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <SearchBar />
-            <CurrentWeatherCard />
-            <HourlyForecastLayout />
-            <ForecastLayout />
-          </Box>
+          {content}
         </Container>
       </Box>
     </ThemeProvider>
   );
-  }
 }
 
 export default App;
