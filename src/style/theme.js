@@ -42,7 +42,7 @@ export const lightTheme = createTheme({
     },
     background: {
       default: '#eef4fb',
-      paper: 'rgba(255,255,255,0.75)',
+      paper: '#ffffff',
     },
     text: {
       primary: '#0f172a',
@@ -64,7 +64,7 @@ export const darkTheme = createTheme({
     },
     background: {
       default: '#0b1220',
-      paper: 'rgba(15,23,42,0.78)',
+      paper: '#0f172a',
     },
     text: {
       primary: '#f8fafc',

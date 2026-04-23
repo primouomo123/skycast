@@ -43,10 +43,16 @@ export function FullLocationWeatherProvider({ children }) {
             }
         }, []);
     
+    useEffect(() => {
+        if (currentLat !== null && currentLon !== null) {
+            fetchCityStateAndCountry(currentLat, currentLon);
+        }
+    }, [currentLat, currentLon]);
+    
 
     useEffect(() => {
         if (searchedCity && searchedState && searchedCountry) {
-            fetchLocation(searchedCity, searchedState);
+            fetchLocation(searchedCity, searchedState, searchedCountry);
         }
         }, [searchedCity, searchedState, searchedCountry]);
     
@@ -56,12 +62,6 @@ export function FullLocationWeatherProvider({ children }) {
         setCurrentLon(lon);
     }
     }, [lat, lon]);
-    
-    useEffect(() => {
-        if (currentLat !== null && currentLon !== null) {
-            fetchCityStateAndCountry(currentLat, currentLon);
-        }
-    }, [currentLat, currentLon]);
 
     useEffect(() => {
         if (currentLat !== null && currentLon !== null) {

@@ -1,6 +1,6 @@
-import { Grid, CircularProgress, Box, Typography } from '@mui/material';
-import ForecastWeatherCard from './ForecastWeatherCard';
-import { useWeatherContext } from '../context/FullLocationWeatherContext';
+import { Box, CircularProgress, Typography } from "@mui/material";
+import ForecastWeatherCard from "./ForecastWeatherCard";
+import { useWeatherContext } from "../context/FullLocationWeatherContext";
 
 function ForecastLayout() {
   const {
@@ -13,47 +13,51 @@ function ForecastLayout() {
     getError
   } = useWeatherContext();
 
-  if (
-    weatherLoading ||
-    locationLoading ||
-    getLoading ||
-    dailyForecast == null ||
-    dailyForecast.length === 0
-  ) {
-    return <CircularProgress sx={{ display: "block", mx: "auto", mt: 5 }} />;
-  }
-
-  if (weatherError || locationError || getError) {
-    return <div>Error: {weatherError || locationError || getError}</div>;
-  }
-
   return (
-    <Box sx={{ mt: 1, mb: 4 }}>
-      <Box sx={{ textAlign: "center", mb: 3 }}>
-        <Typography variant="overline" color="text.secondary" sx={{ letterSpacing: 2 }}>
+    <Box sx={{ mt: 4, mb: 4 }}>
+      <Box sx={{ textAlign: "center", mb: 2 }}>
+        <Typography
+          variant="overline"
+          color="text.secondary"
+          sx={{ letterSpacing: 2 }}
+        >
           Outlook
         </Typography>
 
-        <Typography variant="h4" fontWeight={800}>
+        <Typography variant="h5" fontWeight={800}>
           7-Day Forecast
-        </Typography>
-
-        <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
-          A quick look at the week ahead
         </Typography>
       </Box>
 
-      <Grid
-        container
-        spacing={3}
-        justifyContent="center"
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          overflowX: "auto",
+          pb: 1,
+          px: 0.5,
+          scrollBehavior: "smooth",
+          scrollbarWidth: "thin",
+          "&::-webkit-scrollbar": {
+            height: 8,
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(120,120,120,0.35)",
+            borderRadius: 999,
+          },
+        }}
       >
         {dailyForecast.map((dayData) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={dayData.dailyDate}>
+          <Box
+            key={dayData.dailyDate}
+            sx={{
+              flex: "0 0 auto",
+            }}
+          >
             <ForecastWeatherCard dayData={dayData} />
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 }

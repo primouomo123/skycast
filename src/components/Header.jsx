@@ -16,7 +16,7 @@ function Header({ isDarkMode, handleThemeToggle }) {
         {/* Left: User Location's Weather*/}
         <Box sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
           <IconButton color="inherit" onClick={handleUnitToggle} sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
-            {isCelsius ? "°C" : "°F"}
+            {isCelsius ? "°F" : "°C"}
           </IconButton>
         </Box>
         
@@ -29,7 +29,7 @@ function Header({ isDarkMode, handleThemeToggle }) {
 
         {/* Right: Actions */}
         <IconButton color="inherit" onClick={handleThemeToggle} sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
-          {isDarkMode ? <DarkModeIcon sx={{color: "black"}} /> : <LightModeIcon sx={{color: "yellow"}} />} {isDarkMode ? "Dark" : "Light"} mode
+          {isDarkMode ? <LightModeIcon sx={{color: "yellow"}} /> : <DarkModeIcon sx={{color: "black"}} />} {isDarkMode ? "Light" : "Dark"} mode
         </IconButton>
 
       </Toolbar>

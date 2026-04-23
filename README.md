@@ -1,16 +1,35 @@
-# React + Vite
+# Skycast
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Skycast is a modern weather dashboard built with React and Vite. It allows users to search for weather conditions by city, view current weather, hourly and daily forecasts, and see weather details such as temperature, humidity, wind speed, and more.
 
-Currently, two official plugins are available:
+## Setup Instructions
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/primouomo123/skycast.git
+   cd skycast
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Run the app locally:**
+   ```bash
+   npm run dev
+   ```
 
-## React Compiler
+## API Used and Endpoints
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Skycast uses the [OpenWeatherMap API](https://openweathermap.org/api):
+- **Direct Geocoding:** `https://api.openweathermap.org/geo/1.0/direct`
+- **Reverse Geocoding:** `https://api.openweathermap.org/geo/1.0/reverse`
+- **One Call Weather Data:** `https://api.openweathermap.org/data/3.0/onecall`
 
-## Expanding the ESLint configuration
+## Challenges or Known Bugs
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Ensure the API key is valid and has sufficient quota on OpenWeatherMap.
+- Some cities may not be found if not available in the OpenWeatherMap geocoding database.
+
+---
+
+Feel free to contribute or report issues!

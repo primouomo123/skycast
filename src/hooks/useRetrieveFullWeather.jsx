@@ -31,7 +31,7 @@ function useRetrieveFullWeather() {
         }
         
         catch (err) {
-            setError(err.response?.data?.message || err.message);
+            setError(err.message);
         }
         
         finally {

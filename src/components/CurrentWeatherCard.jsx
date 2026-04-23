@@ -33,27 +33,13 @@ function CurrentWeatherCard() {
     getError
   } = useWeatherContext();
 
-  if (
-    weatherLoading ||
-    locationLoading ||
-    getLoading ||
-    currentTempC == null ||
-    currentTempF == null
-  ) {
-    return <CircularProgress sx={{ display: "block", mx: "auto", mt: 5 }} />;
-  }
-
-  if (weatherError) return <div>Error: {weatherError}</div>;
-  if (locationError) return <div>Error: {locationError}</div>;
-  if (getError) return <div>Error: {getError}</div>;
-
   return (
     <Box
       sx={{
         width: "100%",
         borderRadius: 5,
         p: { xs: 2.5, md: 4 },
-        mt: 10,
+        mt: 3,
         background: (theme) =>
           theme.palette.mode === "dark"
             ? "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)"

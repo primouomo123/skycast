@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ThemeProvider, CssBaseline, Container, Box } from '@mui/material';
+import { ThemeProvider, CssBaseline, Container, Box, CircularProgress, Typography } from '@mui/material';
 import { lightTheme, darkTheme } from './style/theme';
 
 import Header from './components/Header';
@@ -7,13 +7,46 @@ import SearchBar from './components/SearchBar';
 import CurrentWeatherCard from './components/CurrentWeatherCard';
 import HourlyForecastLayout from './components/HourlyForecastLayout';
 import ForecastLayout from './components/ForecastLayout';
+import { useWeatherContext } from './context/FullLocationWeatherContext';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { 
+    city,
+    weatherLoading,
+    locationLoading,
+    getLoading,
+    weatherError,
+    locationError,
+    getError
+   } = useWeatherContext();
 
   const handleThemeToggle = () => {
     setIsDarkMode((prev) => !prev);
   };
+
+  let content = null;
+
+  if (weatherError || locationError || getError) {
+    content = <Typography variant="h6" color="error" align="center" sx={{ mt: 20 }}>
+                Error: {weatherError || locationError || getError}
+              </Typography>;
+  }
+
+  else if (weatherLoading || city == null) {
+    content = <CircularProgress sx={{ display: 'block', mx: 'auto', mt: 20 }} />;
+  }
+
+  else {
+    content = (
+      <>
+        <CurrentWeatherCard />
+        <HourlyForecastLayout />
+        <ForecastLayout />
+      </>
+    );
+  }
+  
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
@@ -36,9 +69,7 @@ function App() {
 
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
             <SearchBar />
-            <CurrentWeatherCard />
-            <HourlyForecastLayout />
-            <ForecastLayout />
+            {content}
           </Box>
         </Container>
       </Box>

@@ -24,15 +24,6 @@ function ForecastWeatherCard({ dayData }) {
             ? "0 12px 28px rgba(0,0,0,0.28)"
             : "0 12px 28px rgba(15,23,42,0.07)",
         backdropFilter: "blur(14px)",
-        transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease",
-        "&:hover": {
-          transform: "translateY(-5px)",
-          borderColor: "primary.main",
-          boxShadow: (theme) =>
-            theme.palette.mode === "dark"
-              ? "0 18px 38px rgba(0,0,0,0.35)"
-              : "0 18px 38px rgba(15,23,42,0.10)",
-        },
       }}
     >
       <CardContent
