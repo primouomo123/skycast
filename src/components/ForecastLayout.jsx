@@ -13,18 +13,6 @@ function ForecastLayout() {
     getError
   } = useWeatherContext();
 
-  if (
-    weatherLoading ||
-    dailyForecast == null ||
-    dailyForecast.length === 0
-  ) {
-    return <CircularProgress sx={{ display: "block", mx: "auto", mt: 5 }} />;
-  }
-
-  if (weatherError || locationError || getError) {
-    return <div>Error: {weatherError || locationError || getError}</div>;
-  }
-
   return (
     <Box sx={{ mt: 4, mb: 4 }}>
       <Box sx={{ textAlign: "center", mb: 2 }}>

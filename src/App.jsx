@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ThemeProvider, CssBaseline, Container, Box } from '@mui/material';
+import { ThemeProvider, CssBaseline, Container, Box, CircularProgress } from '@mui/material';
 import { lightTheme, darkTheme } from './style/theme';
 
 import Header from './components/Header';
@@ -7,15 +7,33 @@ import SearchBar from './components/SearchBar';
 import CurrentWeatherCard from './components/CurrentWeatherCard';
 import HourlyForecastLayout from './components/HourlyForecastLayout';
 import ForecastLayout from './components/ForecastLayout';
+import { useWeatherContext } from './context/FullLocationWeatherContext';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { 
+    weatherLoading,
+    locationLoading,
+    getLoading,
+    weatherError,
+    locationError,
+    getError
+   } = useWeatherContext();
 
   const handleThemeToggle = () => {
     setIsDarkMode((prev) => !prev);
   };
 
-  return (
+  if (weatherLoading || locationLoading || getLoading) {
+    return <CircularProgress sx={{ display: 'block', mx: 'auto', mt: 20 }} />;
+  }
+
+  else if (weatherError || locationError || getError) {
+    return <div>Error: {weatherError || locationError || getError}</div>;
+  }
+
+  else {
+    return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <CssBaseline />
       <Box
@@ -44,6 +62,7 @@ function App() {
       </Box>
     </ThemeProvider>
   );
+  }
 }
 
 export default App;

@@ -33,18 +33,6 @@ function CurrentWeatherCard() {
     getError
   } = useWeatherContext();
 
-  if (
-    weatherLoading ||
-    currentTempC == null ||
-    currentTempF == null
-  ) {
-    return <CircularProgress sx={{ display: "block", mx: "auto", mt: 5 }} />;
-  }
-
-  if (weatherError) return <div>Error: {weatherError}</div>;
-  if (locationError) return <div>Error: {locationError}</div>;
-  if (getError) return <div>Error: {getError}</div>;
-
   return (
     <Box
       sx={{
