@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ThemeProvider, CssBaseline, Container, Box, CircularProgress } from '@mui/material';
+import { ThemeProvider, CssBaseline, Container, Box, CircularProgress, Typography } from '@mui/material';
 import { lightTheme, darkTheme } from './style/theme';
 
 import Header from './components/Header';
@@ -27,23 +27,24 @@ function App() {
 
   let content = null;
 
-  if (weatherLoading || locationLoading || getLoading) {
+  if (weatherLoading || locationLoading || getLoading || city == null) {
     content = <CircularProgress sx={{ display: 'block', mx: 'auto', mt: 20 }} />;
   }
 
   else if (weatherError || locationError || getError) {
-    content = <div>Error: {weatherError || locationError || getError}</div>;
+    content = <Typography variant="h6" color="error" align="center" sx={{ mt: 20 }}>
+                Error: {weatherError || locationError || getError}
+              </Typography>;
   }
 
   else {
     content = (
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <SearchBar />
-            <CurrentWeatherCard />
-            <HourlyForecastLayout />
-            <ForecastLayout />
-          </Box>
-    )
+      <>
+        <CurrentWeatherCard />
+        <HourlyForecastLayout />
+        <ForecastLayout />
+      </>
+    );
   }
   
 
@@ -66,7 +67,10 @@ function App() {
             handleThemeToggle={handleThemeToggle}
           />
 
-          {content}
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <SearchBar />
+            {content}
+          </Box>
         </Container>
       </Box>
     </ThemeProvider>

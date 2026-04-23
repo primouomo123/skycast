@@ -31,7 +31,7 @@ function useRetrieveLocation() {
             });
             
             if (!response.data?.length) {
-                throw new Error('Location not found');
+                throw new Error('The city doesn\'t exist or cannot be found');
             }
 
             const data = response.data[0];
