@@ -4,7 +4,7 @@ import {
   IconButton,
   Paper,
   Box,
-  MenuItem,
+  Autocomplete,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useWeatherContext } from "../context/FullLocationWeatherContext";
@@ -12,25 +12,30 @@ import { usaStates } from "../utils/states";
 
 function SearchBar() {
   const [city, setCity] = useState("");
-  const [state, setState] = useState("");
+  const [state, setState] = useState(null);
+  const [stateError, setStateError] = useState(false);
+
   const { setSearchedCity, setSearchedState } = useWeatherContext();
-
-  const handleSearch = () => {
-    if (city.trim() === "" || state.trim() === "") {
-      return;
-    }
-
-    setSearchedCity(city);
-    setSearchedState(state);
-    setCity("");
-    setState("");
-  };
 
   const inputRef = useRef(null);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  const handleSearch = () => {
+    if (city.trim() === "" || !state) {
+      setStateError(!state);
+      return;
+    }
+
+    setSearchedCity(city.trim());
+    setSearchedState(state.abbreviation);
+
+    setCity("");
+    setState(null);
+    setStateError(false);
+  };
 
   return (
     <Box
@@ -75,25 +80,31 @@ function SearchBar() {
           inputRef={inputRef}
         />
 
-        <TextField
-          select
-          label="State"
-          variant="outlined"
-          size="small"
+        <Autocomplete
+          options={usaStates}
           value={state}
-          onChange={(e) => setState(e.target.value)}
+          onChange={(event, newValue) => {
+            setState(newValue);
+            setStateError(false);
+          }}
+          getOptionLabel={(option) =>
+            `${option.abbreviation} - ${option.name}`
+          }
+          isOptionEqualToValue={(option, value) =>
+            option.abbreviation === value.abbreviation
+          }
           fullWidth
-          required
-        >
-          {usaStates.map((usaState) => (
-            <MenuItem
-              key={usaState.abbreviation}
-              value={usaState.abbreviation}
-            >
-              {usaState.abbreviation} - {usaState.name}
-            </MenuItem>
-          ))}
-        </TextField>
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="State"
+              variant="outlined"
+              size="small"
+              error={stateError}
+              helperText={stateError ? "Please select a valid state" : ""}
+            />
+          )}
+        />
 
         <IconButton type="submit" color="primary">
           <SearchIcon />

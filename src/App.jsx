@@ -33,7 +33,7 @@ function App() {
               </Typography>;
   }
 
-  else if (weatherLoading || locationLoading || getLoading || city == null) {
+  else if (weatherLoading || city == null) {
     content = <CircularProgress sx={{ display: 'block', mx: 'auto', mt: 20 }} />;
   }
 
