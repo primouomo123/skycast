@@ -10,8 +10,6 @@ export default function Dashboard() {
   const {
     city,
     weatherLoading,
-    locationLoading,
-    getLoading,
     weatherError,
     locationError,
     getError,
