@@ -27,14 +27,14 @@ function App() {
 
   let content = null;
 
-  if (weatherLoading || locationLoading || getLoading || city == null) {
-    content = <CircularProgress sx={{ display: 'block', mx: 'auto', mt: 20 }} />;
-  }
-
-  else if (weatherError || locationError || getError) {
+  if (weatherError || locationError || getError) {
     content = <Typography variant="h6" color="error" align="center" sx={{ mt: 20 }}>
                 Error: {weatherError || locationError || getError}
               </Typography>;
+  }
+
+  else if (weatherLoading || locationLoading || getLoading || city == null) {
+    content = <CircularProgress sx={{ display: 'block', mx: 'auto', mt: 20 }} />;
   }
 
   else {
