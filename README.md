@@ -29,6 +29,8 @@ Skycast uses the [OpenWeatherMap API](https://openweathermap.org/api):
 
 - Ensure the API key is valid and has sufficient quota on OpenWeatherMap.
 - Some cities may not be found if not available in the OpenWeatherMap geocoding database.
+- Dealing with dates and time for every timezone was a hard task for longer than I expected.
+- Creating any type of design is always a challenge for me, so I struggle a lot with that.
 
 ---
 
