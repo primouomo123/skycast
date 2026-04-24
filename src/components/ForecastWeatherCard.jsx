@@ -13,17 +13,22 @@ function ForecastWeatherCard({ dayData }) {
         minHeight: 300,
         mx: "auto",
         borderRadius: 5,
-        background: (theme) =>
-          theme.palette.mode === "dark"
-            ? "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)"
-            : "linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.72) 100%)",
+        background: (theme) => theme.palette.background.card,
         border: "1px solid",
         borderColor: "divider",
         boxShadow: (theme) =>
           theme.palette.mode === "dark"
             ? "0 12px 28px rgba(0,0,0,0.28)"
-            : "0 12px 28px rgba(15,23,42,0.07)",
+            : "0 10px 25px rgba(15,23,42,0.08)",
         backdropFilter: "blur(14px)",
+        transition: "all 0.25s ease",
+        "&:hover": {
+          transform: "translateY(-4px)",
+          boxShadow: (theme) =>
+            theme.palette.mode === "dark"
+              ? "0 18px 40px rgba(0,0,0,0.35)"
+              : "0 18px 40px rgba(15,23,42,0.12)",
+        },
       }}
     >
       <CardContent
@@ -84,43 +89,25 @@ function ForecastWeatherCard({ dayData }) {
             mb: 2,
           }}
         >
-          <Box
-            sx={{
-              px: 2,
-              py: 1.2,
-              borderRadius: 3,
-              backgroundColor: "action.hover",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography variant="caption" color="text.secondary">
-              Low
-            </Typography>
-            <Typography variant="h6" fontWeight={800} color="info.main">
-              {isCelsius ? `${dayData.dailyMinTempC}°C` : `${dayData.dailyMinTempF}°F`}
-            </Typography>
-          </Box>
+          <TempBox
+            label="Low"
+            value={
+              isCelsius
+                ? `${dayData.dailyMinTempC}°C`
+                : `${dayData.dailyMinTempF}°F`
+            }
+            color="info.main"
+          />
 
-          <Box
-            sx={{
-              px: 2,
-              py: 1.2,
-              borderRadius: 3,
-              backgroundColor: "action.hover",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography variant="caption" color="text.secondary">
-              High
-            </Typography>
-            <Typography variant="h6" fontWeight={800} color="error.main">
-              {isCelsius ? `${dayData.dailyMaxTempC}°C` : `${dayData.dailyMaxTempF}°F`}
-            </Typography>
-          </Box>
+          <TempBox
+            label="High"
+            value={
+              isCelsius
+                ? `${dayData.dailyMaxTempC}°C`
+                : `${dayData.dailyMaxTempF}°F`
+            }
+            color="error.main"
+          />
         </Box>
 
         <Box
@@ -133,12 +120,37 @@ function ForecastWeatherCard({ dayData }) {
           }}
         >
           <WaterDropOutlinedIcon sx={{ fontSize: 18 }} />
+
           <Typography variant="body2">
             Humidity {dayData.dailyHumidity}%
           </Typography>
         </Box>
       </CardContent>
     </Card>
+  );
+}
+
+function TempBox({ label, value, color }) {
+  return (
+    <Box
+      sx={{
+        px: 2,
+        py: 1.2,
+        borderRadius: 3,
+        backgroundColor: (theme) => theme.palette.background.soft,
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      <Typography variant="caption" color="text.secondary">
+        {label}
+      </Typography>
+
+      <Typography variant="h6" fontWeight={800} color={color}>
+        {value}
+      </Typography>
+    </Box>
   );
 }
 

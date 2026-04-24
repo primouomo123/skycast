@@ -11,17 +11,22 @@ function HourlyWeatherCard({ hourData }) {
         width: 140,
         minHeight: 220,
         borderRadius: 4,
-        background: (theme) =>
-          theme.palette.mode === "dark"
-            ? "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)"
-            : "linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.72) 100%)",
+        background: (theme) => theme.palette.background.card,
         border: "1px solid",
         borderColor: "divider",
         boxShadow: (theme) =>
           theme.palette.mode === "dark"
             ? "0 10px 24px rgba(0,0,0,0.28)"
-            : "0 10px 24px rgba(15,23,42,0.07)",
+            : "0 10px 25px rgba(15,23,42,0.08)",
         backdropFilter: "blur(12px)",
+        transition: "all 0.25s ease",
+        "&:hover": {
+          transform: "translateY(-4px)",
+          boxShadow: (theme) =>
+            theme.palette.mode === "dark"
+              ? "0 16px 34px rgba(0,0,0,0.35)"
+              : "0 16px 34px rgba(15,23,42,0.12)",
+        },
       }}
     >
       <CardContent
@@ -51,6 +56,7 @@ function HourlyWeatherCard({ hourData }) {
               width: 64,
               height: 64,
               mb: 1,
+              filter: "drop-shadow(0 8px 14px rgba(0,0,0,0.10))",
             }}
           />
         )}
@@ -85,9 +91,8 @@ function HourlyWeatherCard({ hourData }) {
           }}
         >
           <WaterDropOutlinedIcon sx={{ fontSize: 16 }} />
-          <Typography variant="caption">
-            {hourData.hourlyHumidity}%
-          </Typography>
+
+          <Typography variant="caption">{hourData.hourlyHumidity}%</Typography>
         </Box>
       </CardContent>
     </Card>

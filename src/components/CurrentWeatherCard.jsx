@@ -1,4 +1,4 @@
-import { Typography, Box, Divider, CircularProgress } from "@mui/material";
+import { Typography, Box, Divider } from "@mui/material";
 import AirOutlinedIcon from "@mui/icons-material/AirOutlined";
 import WaterDropOutlinedIcon from "@mui/icons-material/WaterDropOutlined";
 import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
@@ -24,7 +24,7 @@ function CurrentWeatherCard() {
     currentWindGustMPH,
     currentTime,
     currentDayOfWeek,
-    currentDate
+    currentDate,
   } = useWeatherContext();
 
   return (
@@ -34,31 +34,29 @@ function CurrentWeatherCard() {
         borderRadius: 5,
         p: { xs: 2.5, md: 4 },
         mt: 3,
-        background: (theme) =>
-          theme.palette.mode === "dark"
-            ? "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)"
-            : "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 100%)",
+        background: (theme) => theme.palette.background.card,
         border: "1px solid",
         borderColor: "divider",
         boxShadow: (theme) =>
           theme.palette.mode === "dark"
             ? "0 16px 40px rgba(0,0,0,0.35)"
-            : "0 16px 40px rgba(15,23,42,0.08)",
+            : "0 16px 40px rgba(15,23,42,0.10)",
         backdropFilter: "blur(16px)",
       }}
     >
-      <Box
-        sx={{
-          mb: 3,
-          textAlign: "center",
-        }}
-      >
-        <Typography variant="overline" color="text.secondary" sx={{ letterSpacing: 2 }}>
+      <Box sx={{ mb: 3, textAlign: "center" }}>
+        <Typography
+          variant="overline"
+          color="text.secondary"
+          sx={{ letterSpacing: 2 }}
+        >
           Current Weather
         </Typography>
 
         <Typography variant="h4" fontWeight={800}>
-          {city ? `${city}, ${state ? `${state}, ` : ""}${country ?? ""}` : "Unknown Location"}
+          {city
+            ? `${city}, ${state ? `${state}, ` : ""}${country ?? ""}`
+            : "Unknown Location"}
         </Typography>
 
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.75 }}>
@@ -126,76 +124,67 @@ function CurrentWeatherCard() {
           </Typography>
 
           <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
-            Feels like {isCelsius ? `${currentFeelsLikeC}°C` : `${currentFeelsLikeF}°F`}
+            Feels like{" "}
+            {isCelsius ? `${currentFeelsLikeC}°C` : `${currentFeelsLikeF}°F`}
           </Typography>
         </Box>
 
         <Box sx={{ flex: 1, width: "100%" }}>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1.25 }}>
-            <Box
-              sx={{
-                p: 1.5,
-                borderRadius: 3,
-                backgroundColor: "action.hover",
-                display: "flex",
-                alignItems: "center",
-                gap: 1.25,
-              }}
-            >
-              <AirOutlinedIcon fontSize="small" color="primary" />
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Wind Speed
-                </Typography>
-                <Typography variant="body1" fontWeight={700}>
-                  {isCelsius ? `${currentWindSpeedKPH} km/h` : `${currentWindSpeedMPH} mph`}
-                </Typography>
-              </Box>
-            </Box>
+            <WeatherInfoBox
+              icon={<AirOutlinedIcon fontSize="small" color="primary" />}
+              label="Wind Speed"
+              value={
+                isCelsius
+                  ? `${currentWindSpeedKPH} km/h`
+                  : `${currentWindSpeedMPH} mph`
+              }
+            />
 
-            <Box
-              sx={{
-                p: 1.5,
-                borderRadius: 3,
-                backgroundColor: "action.hover",
-                display: "flex",
-                alignItems: "center",
-                gap: 1.25,
-              }}
-            >
-              <ExploreOutlinedIcon fontSize="small" color="secondary" />
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Wind Gust
-                </Typography>
-                <Typography variant="body1" fontWeight={700}>
-                  {isCelsius ? `${currentWindGustKPH} km/h` : `${currentWindGustMPH} mph`}
-                </Typography>
-              </Box>
-            </Box>
+            <WeatherInfoBox
+              icon={<ExploreOutlinedIcon fontSize="small" color="secondary" />}
+              label="Wind Gust"
+              value={
+                isCelsius
+                  ? `${currentWindGustKPH} km/h`
+                  : `${currentWindGustMPH} mph`
+              }
+            />
 
-            <Box
-              sx={{
-                p: 1.5,
-                borderRadius: 3,
-                backgroundColor: "action.hover",
-                display: "flex",
-                alignItems: "center",
-                gap: 1.25,
-              }}
-            >
-              <WaterDropOutlinedIcon fontSize="small" color="primary" />
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Humidity
-                </Typography>
-                <Typography variant="body1" fontWeight={700}>
-                  {currentHumidity}%
-                </Typography>
-              </Box>
-            </Box>
+            <WeatherInfoBox
+              icon={<WaterDropOutlinedIcon fontSize="small" color="primary" />}
+              label="Humidity"
+              value={`${currentHumidity}%`}
+            />
           </Box>
         </Box>
+      </Box>
+    </Box>
+  );
+}
+
+function WeatherInfoBox({ icon, label, value }) {
+  return (
+    <Box
+      sx={{
+        p: 1.5,
+        borderRadius: 3,
+        backgroundColor: (theme) => theme.palette.background.soft,
+        display: "flex",
+        alignItems: "center",
+        gap: 1.25,
+      }}
+    >
+      {icon}
+
+      <Box>
+        <Typography variant="body2" color="text.secondary">
+          {label}
+        </Typography>
+
+        <Typography variant="body1" fontWeight={700}>
+          {value}
+        </Typography>
       </Box>
     </Box>
   );

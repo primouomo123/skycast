@@ -58,14 +58,17 @@ function SearchBar() {
           display: "flex",
           alignItems: "center",
           width: "100%",
-          maxWidth: 500,
-          p: 1,
-          boxShadow: 4,
-          borderRadius: 3,
+          maxWidth: 540,
+          p: 1.25,
+          borderRadius: 4,
           border: "1px solid",
           borderColor: "divider",
-          backdropFilter: "blur(10px)",
-          backgroundColor: "background.paper",
+          background: (theme) => theme.palette.background.card,
+          boxShadow: (theme) =>
+            theme.palette.mode === "dark"
+              ? "0 12px 28px rgba(0,0,0,0.28)"
+              : "0 10px 25px rgba(15,23,42,0.08)",
+          backdropFilter: "blur(14px)",
           gap: 1,
         }}
       >
@@ -106,7 +109,16 @@ function SearchBar() {
           )}
         />
 
-        <IconButton type="submit" color="primary">
+        <IconButton
+          type="submit"
+          color="primary"
+          sx={{
+            backgroundColor: (theme) => theme.palette.background.soft,
+            "&:hover": {
+              backgroundColor: "action.selected",
+            },
+          }}
+        >
           <SearchIcon />
         </IconButton>
       </Paper>
