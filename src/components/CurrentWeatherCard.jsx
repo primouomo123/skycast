@@ -135,6 +135,9 @@ function CurrentWeatherCard() {
               icon={<AirOutlinedIcon fontSize="small" color="primary" />}
               label="Wind Speed"
               value={
+                currentWindSpeedKPH == null || currentWindSpeedMPH == null
+                ? "Not available"
+                 :
                 isCelsius
                   ? `${currentWindSpeedKPH} km/h`
                   : `${currentWindSpeedMPH} mph`
@@ -145,7 +148,10 @@ function CurrentWeatherCard() {
               icon={<ExploreOutlinedIcon fontSize="small" color="secondary" />}
               label="Wind Gust"
               value={
-                isCelsius
+                currentWindGustKPH == null || currentWindGustMPH == null
+                ? "Not available"
+                  :
+               isCelsius
                   ? `${currentWindGustKPH} km/h`
                   : `${currentWindGustMPH} mph`
               }
@@ -154,7 +160,11 @@ function CurrentWeatherCard() {
             <WeatherInfoBox
               icon={<WaterDropOutlinedIcon fontSize="small" color="primary" />}
               label="Humidity"
-              value={`${currentHumidity}%`}
+              value={
+                currentHumidity == null
+                ? "Not available"
+                : `${currentHumidity}%`
+              }
             />
           </Box>
         </Box>
